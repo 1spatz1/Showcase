@@ -1,6 +1,6 @@
 ﻿namespace Showcase.Infrastructure.Recaptcha.Queries;
 
-public class RecaptchaResponse
-{
-    
-}
+public record RecaptchaResponse
+(
+    bool Succes
+);

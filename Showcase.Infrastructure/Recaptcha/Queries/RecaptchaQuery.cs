@@ -1,6 +1,9 @@
-﻿namespace Showcase.Infrastructure.Recaptcha.Queries;
+﻿using ErrorOr;
+using MediatR;
 
-public class RecaptchaQuery
-{
-    
-}
+namespace Showcase.Infrastructure.Recaptcha.Queries;
+
+public record RecaptchaQuery
+(
+    string RecaptchaToken
+) : IRequest<ErrorOr<RecaptchaResponse>>;

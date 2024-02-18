@@ -1,6 +1,12 @@
 ﻿namespace Showcase.Contracts.Contact;
 
-public class ContactRequest
-{
-    
-}
+public record ContactRequest
+(
+    string FirstName,
+    string LastName,
+    string PhoneNumber,
+    string Email,
+    string Subject,
+    string Message,
+    string RecaptchaToken
+);

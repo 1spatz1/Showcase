@@ -1,6 +1,13 @@
-﻿namespace Showcase.Application.Common.Mapping;
+﻿using Mapster;
+using Showcase.Application.Contact.Commands;
+using Showcase.Infrastructure.Recaptcha.Queries;
 
-public class ContactMappingConfig
+namespace Showcase.Application.Common.Mapping;
+
+public class ContactMappingConfig : IRegister
 {
-    
+    public void Register(TypeAdapterConfig config)
+    {
+        config.NewConfig<ContactCommand, RecaptchaQuery>();
+    }
 }
