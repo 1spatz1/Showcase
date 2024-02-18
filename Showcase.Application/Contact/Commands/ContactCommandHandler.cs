@@ -25,7 +25,7 @@ public class ContactCommandHandler : IRequestHandler<ContactCommand, ErrorOr<Con
         ErrorOr<RecaptchaResponse> response = await _mediator.Send(query, cancellationToken);
         
         if (response.IsError || response.Value.Succes == false)
-            return Errors.UnexpectedError;
+            return Errors.Authorisation.ReCaptchaFailed;
         
         return new ContactResponse("Email sent");
     }

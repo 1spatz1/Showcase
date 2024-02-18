@@ -39,7 +39,7 @@ public class RecaptchaQueryHandler : IRequestHandler<RecaptchaQuery, ErrorOr<Rec
         }
         catch(Exception ex)
         {
-            return Errors.UnexpectedError;
+            return Errors.Authorisation.ReCaptchaFailed;
         }
         return new RecaptchaResponse(true);
     }
