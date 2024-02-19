@@ -5,13 +5,6 @@ namespace Showcase.Application.Contact.Commands;
 
 public class ContactCommandValidator : AbstractValidator<ContactCommand>
 {
-    // string FirstName,
-    // string LastName,
-    // string PhoneNumber,
-    // string Email,
-    // string Subject,
-    // string Message,
-    // string RecaptchaToken
     public ContactCommandValidator()
     {
         RuleFor(x => x.FirstName)

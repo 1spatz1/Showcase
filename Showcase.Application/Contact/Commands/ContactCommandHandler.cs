@@ -22,8 +22,8 @@ public class ContactCommandHandler : IRequestHandler<ContactCommand, ErrorOr<Con
     
     public async Task<ErrorOr<ContactResponse>> Handle(ContactCommand request, CancellationToken cancellationToken)
     {
-        RecaptchaQuery recaptchaQuery = _mapper.Map<RecaptchaQuery>(request);
-        ErrorOr<RecaptchaResponse> recaptchaResponse = await _mediator.Send(recaptchaQuery, cancellationToken);
+        ValidateRecaptchaQuery validateRecaptchaQuery = _mapper.Map<ValidateRecaptchaQuery>(request);
+        ErrorOr<ValidateRecaptchaResponse> recaptchaResponse = await _mediator.Send(validateRecaptchaQuery, cancellationToken);
         
         if (recaptchaResponse.IsError || recaptchaResponse.Value.Succes == false)
             return Errors.Authorisation.ReCaptchaFailed;

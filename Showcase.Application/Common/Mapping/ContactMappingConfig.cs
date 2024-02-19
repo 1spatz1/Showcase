@@ -9,7 +9,7 @@ public class ContactMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<ContactCommand, RecaptchaQuery>();
+        config.NewConfig<ContactCommand, ValidateRecaptchaQuery>();
         config.NewConfig<ContactCommand, SendEmailCommand>();
     }
 }

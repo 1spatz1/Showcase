@@ -6,9 +6,9 @@ using Showcase.Domain.Common.Errors;
 
 namespace Showcase.Infrastructure.Recaptcha.Queries;
 
-public class RecaptchaQueryHandler : IRequestHandler<RecaptchaQuery, ErrorOr<RecaptchaResponse>>
+public class ValidateRecaptchaQueryHandler : IRequestHandler<ValidateRecaptchaQuery, ErrorOr<ValidateRecaptchaResponse>>
 {
-    public async Task<ErrorOr<RecaptchaResponse>> Handle(RecaptchaQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<ValidateRecaptchaResponse>> Handle(ValidateRecaptchaQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -20,7 +20,7 @@ public class RecaptchaQueryHandler : IRequestHandler<RecaptchaQuery, ErrorOr<Rec
                 .Result;
             if (res.StatusCode != HttpStatusCode.OK)
             {
-                return new RecaptchaResponse(false);
+                return new ValidateRecaptchaResponse(false);
             }
             
             string jsonRes = res.Content.ReadAsStringAsync().Result;
@@ -32,7 +32,7 @@ public class RecaptchaQueryHandler : IRequestHandler<RecaptchaQuery, ErrorOr<Rec
 
                 if (success != true || score <= 0.5m)
                 {
-                    return new RecaptchaResponse(false);
+                    return new ValidateRecaptchaResponse(false);
                 }
             }
         }
@@ -41,6 +41,6 @@ public class RecaptchaQueryHandler : IRequestHandler<RecaptchaQuery, ErrorOr<Rec
             Console.WriteLine(e);
             return Errors.Authorisation.ReCaptchaFailed;
         }
-        return new RecaptchaResponse(true);
+        return new ValidateRecaptchaResponse(true);
     }
 }

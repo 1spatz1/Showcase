@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Showcase.Infrastructure.Recaptcha.Queries;
 
-public record RecaptchaQuery
+public record ValidateRecaptchaQuery
 (
     string RecaptchaToken
-) : IRequest<ErrorOr<RecaptchaResponse>>;
+) : IRequest<ErrorOr<ValidateRecaptchaResponse>>;

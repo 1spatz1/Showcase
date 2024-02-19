@@ -1,5 +1,4 @@
-﻿using System.Data;
-using ErrorOr;
+﻿using ErrorOr;
 using MediatR;
 using System.Net;
 using System.Net.Mail;
