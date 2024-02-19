@@ -4,6 +4,7 @@ using MediatR;
 
 using Showcase.Application.Contact.Common;
 using Showcase.Domain.Common.Errors;
+using Showcase.Infrastructure.Email.Commands;
 using Showcase.Infrastructure.Recaptcha.Queries;
 
 namespace Showcase.Application.Contact.Commands;
@@ -21,11 +22,17 @@ public class ContactCommandHandler : IRequestHandler<ContactCommand, ErrorOr<Con
     
     public async Task<ErrorOr<ContactResponse>> Handle(ContactCommand request, CancellationToken cancellationToken)
     {
-        RecaptchaQuery query = _mapper.Map<RecaptchaQuery>(request);
-        ErrorOr<RecaptchaResponse> response = await _mediator.Send(query, cancellationToken);
+        RecaptchaQuery recaptchaQuery = _mapper.Map<RecaptchaQuery>(request);
+        ErrorOr<RecaptchaResponse> recaptchaResponse = await _mediator.Send(recaptchaQuery, cancellationToken);
         
-        if (response.IsError || response.Value.Succes == false)
+        if (recaptchaResponse.IsError || recaptchaResponse.Value.Succes == false)
             return Errors.Authorisation.ReCaptchaFailed;
+
+        SendEmailCommand sendEmailCommand = _mapper.Map<SendEmailCommand>(request);
+        ErrorOr<SendEmailResponse> sendEmailResponse = await _mediator.Send(sendEmailCommand, cancellationToken);
+        
+        if (sendEmailResponse.IsError)
+            return Errors.UnexpectedError;
         
         return new ContactResponse("Email sent");
     }

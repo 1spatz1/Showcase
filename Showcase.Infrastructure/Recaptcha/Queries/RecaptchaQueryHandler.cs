@@ -12,12 +12,11 @@ public class RecaptchaQueryHandler : IRequestHandler<RecaptchaQuery, ErrorOr<Rec
     {
         try
         {
-            Console.Write(request.RecaptchaToken);
             HttpClient httpClient = new HttpClient();
             var res = httpClient
                 .GetAsync(
                     //TODO ADD A FUCKING API KEY!!!!
-                    $"https://www.google.com/recaptcha/api/siteverify?secret=API_KEY&response={request.RecaptchaToken}")
+                    $"https://www.google.com/recaptcha/api/siteverify?secret=6Lf8u3IpAAAAABloZKq98oJKdcmU4XKraZ-06m-o&response={request.RecaptchaToken}")
                 .Result;
             if (res.StatusCode != HttpStatusCode.OK)
             {
@@ -37,8 +36,9 @@ public class RecaptchaQueryHandler : IRequestHandler<RecaptchaQuery, ErrorOr<Rec
                 }
             }
         }
-        catch(Exception ex)
+        catch(Exception e)
         {
+            Console.WriteLine(e);
             return Errors.Authorisation.ReCaptchaFailed;
         }
         return new RecaptchaResponse(true);
