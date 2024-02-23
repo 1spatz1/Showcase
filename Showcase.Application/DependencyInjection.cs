@@ -2,6 +2,8 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using Serilog.Events;
 using Showcase.Application.Common.Behaviors;
 using Showcase.Application.Common.Mapping;
 
@@ -21,6 +23,16 @@ public static class DependencyInjection
             typeof(ValidationBehavior<,>));
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .WriteTo.File("/logs/log-app.txt", rollingInterval: RollingInterval.Month,
+                restrictedToMinimumLevel: LogEventLevel.Warning)
+            .WriteTo.File("/logs/log-app-verbose.txt", rollingInterval: RollingInterval.Month,
+                restrictedToMinimumLevel: LogEventLevel.Verbose)
+            .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
+            .CreateLogger();
         
         return services;
     }

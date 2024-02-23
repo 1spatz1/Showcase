@@ -2,6 +2,8 @@
 using MediatR;
 using System.Net;
 using System.Net.Mail;
+using Serilog;
+using Showcase.Utilities;
 
 
 namespace Showcase.Infrastructure.Email.Commands;
@@ -14,7 +16,7 @@ public class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, ErrorOr
         {
             //TODO ADD LOGIN CREDENTIALS!!!!
             using var client = new SmtpClient("sandbox.smtp.mailtrap.io", 2525);
-            client.Credentials = new NetworkCredential("USERNAME", "PASSWORD");
+            client.Credentials = new NetworkCredential($"{EnvironmentReader.Email.EmailUsername}", $"{EnvironmentReader.Email.EmailPassword}");
             client.EnableSsl = true;
             
             string body = $"from {command.FirstName} {command.LastName} \n\n " +
@@ -24,9 +26,9 @@ public class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, ErrorOr
             
             client.Send("from@example.com", "to@example.com", command.Subject, body);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e);
+            Log.Error(ex, "Something went wrong in SendEmail");
             return Error.Failure();
         }
         return new SendEmailResponse(true);

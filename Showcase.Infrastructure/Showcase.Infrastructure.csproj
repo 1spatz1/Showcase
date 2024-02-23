@@ -9,10 +9,16 @@
     <ItemGroup>
       <PackageReference Include="ErrorOr" Version="1.10.0" />
       <PackageReference Include="MediatR" Version="12.2.0" />
+      <PackageReference Include="Serilog" Version="3.1.2-dev-02097" />
+      <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.1-dev-10377" />
+      <PackageReference Include="Serilog.Filters.Expressions" Version="2.1.1-dev-00054" />
+      <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+      <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00972" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Showcase.Domain\Showcase.Domain.csproj" />
+      <ProjectReference Include="..\Showcase.Utilities\Showcase.Utilities.csproj" />
     </ItemGroup>
 
 </Project>

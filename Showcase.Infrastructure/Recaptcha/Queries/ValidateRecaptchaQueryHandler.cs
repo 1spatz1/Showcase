@@ -2,7 +2,9 @@
 using System.Text.Json;
 using ErrorOr;
 using MediatR;
+using Serilog;
 using Showcase.Domain.Common.Errors;
+using Showcase.Utilities;
 
 namespace Showcase.Infrastructure.Recaptcha.Queries;
 
@@ -16,7 +18,7 @@ public class ValidateRecaptchaQueryHandler : IRequestHandler<ValidateRecaptchaQu
             var res = httpClient
                 .GetAsync(
                     //TODO ADD A FUCKING API KEY!!!!
-                    $"https://www.google.com/recaptcha/api/siteverify?secret=6Lf8u3IpAAAAABloZKq98oJKdcmU4XKraZ-06m-o&response={request.RecaptchaToken}")
+                    $"https://www.google.com/recaptcha/api/siteverify?secret={EnvironmentReader.Recaptcha.GoogleRecaptchaClientSecret}&response={request.RecaptchaToken}")
                 .Result;
             if (res.StatusCode != HttpStatusCode.OK)
             {
@@ -36,9 +38,9 @@ public class ValidateRecaptchaQueryHandler : IRequestHandler<ValidateRecaptchaQu
                 }
             }
         }
-        catch(Exception e)
+        catch(Exception ex)
         {
-            Console.WriteLine(e);
+            Log.Error(ex, "Something went wrong in Recaptcha");
             return Errors.Authorisation.ReCaptchaFailed;
         }
         return new ValidateRecaptchaResponse(true);
