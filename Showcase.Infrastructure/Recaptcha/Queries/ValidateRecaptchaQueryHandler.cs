@@ -17,7 +17,6 @@ public class ValidateRecaptchaQueryHandler : IRequestHandler<ValidateRecaptchaQu
             HttpClient httpClient = new HttpClient();
             var res = httpClient
                 .GetAsync(
-                    //TODO ADD A FUCKING API KEY!!!!
                     $"https://www.google.com/recaptcha/api/siteverify?secret={EnvironmentReader.Recaptcha.GoogleRecaptchaClientSecret}&response={request.RecaptchaToken}")
                 .Result;
             if (res.StatusCode != HttpStatusCode.OK)

@@ -14,7 +14,6 @@ public class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, ErrorOr
     {
         try
         {
-            //TODO ADD LOGIN CREDENTIALS!!!!
             using var client = new SmtpClient("sandbox.smtp.mailtrap.io", 2525);
             client.Credentials = new NetworkCredential($"{EnvironmentReader.Email.EmailUsername}", $"{EnvironmentReader.Email.EmailPassword}");
             client.EnableSsl = true;
