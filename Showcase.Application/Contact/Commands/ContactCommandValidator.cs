@@ -9,15 +9,15 @@ public class ContactCommandValidator : AbstractValidator<ContactCommand>
     {
         RuleFor(x => x.FirstName)
             .NotEmpty()
-            .MaximumLength(50)
+            .MaximumLength(60)
             .WithMessage("Subject must be less then 60 characters long.");
         RuleFor(x => x.LastName)
             .NotEmpty()
-            .MaximumLength(50)
+            .MaximumLength(60)
             .WithMessage("Subject must be less then 60 characters long.");
         RuleFor(x => x.PhoneNumber)
             .NotEmpty()
-            .Matches(@"(^\+[0-9]{2}|^\+[0-9]{2}\(0\)|^\(\+[0-9]{2}\)\(0\)|^00[0-9]{2}|^0)([0-9]{9}$|[0-9\-\s]{10}$)")
+            .Matches(@"(^\+\d{2}|^\+\d{2}\(0\)|^\(\+\d{2}\)\(0\)|^00\d{2}|^0)(\d{9}$|[\d\-\s]{10}$)")
             .WithMessage("Subject must be a phone number.")
             .MaximumLength(20)
             .WithMessage("Subject must be less then 20 characters long.");
