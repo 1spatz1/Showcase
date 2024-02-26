@@ -33,7 +33,7 @@ public class ContactCommandValidator : AbstractValidator<ContactCommand>
             .WithMessage("Subject must be less then 200 characters long.");
         RuleFor(x => x.Message)
             .NotEmpty()
-            .MaximumLength(2000)
+            .MaximumLength(600)
             .WithMessage("Message must be less then 2000 characters long.");
         RuleFor(x => x.RecaptchaToken)
             .NotEmpty();

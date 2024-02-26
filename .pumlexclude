@@ -1,0 +1,5 @@
+﻿Htmx/bin/
+Htmx/obj/
+Htmx.TagHelpers/bin/
+Htmx.TagHelpers/obj/
+Htmx.TagHelpers/JetBrains.Annotations.cs
