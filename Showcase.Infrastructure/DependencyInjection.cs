@@ -1,7 +1,16 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
+using Showcase.Application.Common.Interfaces.Persistence;
+using Showcase.Application.Common.Interfaces.Persistence;
+using Showcase.Application.Common.Interfaces.Services;
+using Showcase.Domain.Entities;
+using Showcase.Domain.Identity;
+using Showcase.Infrastructure.Persistence;
+using Showcase.Infrastructure.Services;
+using Showcase.Utilities;
 
 namespace Showcase.Infrastructure;
 
@@ -12,9 +21,23 @@ public static class DependencyInjection
         services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
 
-        // services.AddScoped(
-        //     typeof(IPipelineBehavior<,>));
+        // Add services
+        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+        services.AddScoped<IJwtTokenService, JwtTokenService>();
         
+        // Identity
+        services.AddIdentityCore<ApplicationUser>(opt =>
+            {
+                opt.User.RequireUniqueEmail = true;
+                opt.Password.RequiredLength = 8;
+            })
+            .AddRoles<ApplicationRole>()
+            .AddRoleManager<RoleManager<ApplicationRole>>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
+        services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
+        services.AddScoped<RoleManager<ApplicationRole>, RoleManager<ApplicationRole>>();
+        
+        // Logging
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()
             .WriteTo.File("/logs/log-infra.txt", rollingInterval: RollingInterval.Month,
