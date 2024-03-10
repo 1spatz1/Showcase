@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
@@ -24,6 +25,9 @@ public static class DependencyInjection
         // Add services
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
+        
+        services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
+            options.UseSqlServer(EnvironmentReader.Database.ConnectionString));
         
         // Identity
         services.AddIdentityCore<ApplicationUser>(opt =>

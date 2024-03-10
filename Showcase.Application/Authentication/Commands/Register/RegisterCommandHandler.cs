@@ -52,7 +52,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<A
         if (!result.Succeeded)
         {
             _logger.LogError("Something went wrong whilst trying to register a new user: {Message}", result.Errors.First().Description);
-            return Error.Custom(code: "Register.IdentityFailure", description: result.Errors.First().Description, type: 400);
+            return Errors.UnexpectedError;
+            //return Error.Custom(code: "Register.IdentityFailure", description: result.Errors.First().Description, type: 400);
         }
 
         await _userManager.AddToRoleAsync(user, IdentityNames.Roles.Member);
