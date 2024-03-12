@@ -5,7 +5,7 @@ using Showcase.Contracts.Contact;
 
 namespace Showcase.Api.Common.Mapping;
 
-public class ContactMappingConfig 
+public class ContactMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {

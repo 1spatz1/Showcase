@@ -15,4 +15,12 @@ public static class V1Routes
 
         public const string SendEmail = "";
     }
+    
+    public static class Game
+    {
+        public const string Controller = "/game";
+
+        public const string Create = "create";
+        public const string Join = "join";
+    }
 }
