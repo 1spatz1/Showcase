@@ -13,5 +13,17 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<ApplicationUser>
             .WithOne(x => x.User)
             .HasForeignKey(x => x.UserId)
             .IsRequired();
+
+        builder
+            .HasMany(x => x.PlayerOneGames)
+            .WithOne(x => x.PlayerOne)
+            .HasForeignKey(x => x.PlayerOneId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder
+            .HasMany(x => x.PlayerTwoGames)
+            .WithOne(x => x.PlayerTwo)
+            .HasForeignKey(x => x.PlayerTwoId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

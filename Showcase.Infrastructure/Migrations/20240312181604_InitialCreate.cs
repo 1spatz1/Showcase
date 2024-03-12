@@ -156,6 +156,54 @@ namespace Showcase.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Games",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlayerOneId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlayerTwoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlayerTurn = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    State = table.Column<int>(type: "int", nullable: false),
+                    Turns = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FinishedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Games", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Games_AspNetUsers_PlayerOneId",
+                        column: x => x.PlayerOneId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Games_AspNetUsers_PlayerTwoId",
+                        column: x => x.PlayerTwoId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BoardPosition",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GameId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BoardPosition", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BoardPosition_Games_GameId",
+                        column: x => x.GameId,
+                        principalTable: "Games",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -194,6 +242,21 @@ namespace Showcase.Infrastructure.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BoardPosition_GameId",
+                table: "BoardPosition",
+                column: "GameId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Games_PlayerOneId",
+                table: "Games",
+                column: "PlayerOneId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Games_PlayerTwoId",
+                table: "Games",
+                column: "PlayerTwoId");
         }
 
         /// <inheritdoc />
@@ -215,7 +278,13 @@ namespace Showcase.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "BoardPosition");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Games");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

@@ -12,7 +12,7 @@ using Showcase.Infrastructure.Persistence;
 namespace Showcase.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240310184740_InitialCreate")]
+    [Migration("20240312181604_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -179,6 +179,60 @@ namespace Showcase.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Showcase.Domain.Entities.BoardPosition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<Guid?>("GameId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.ToTable("BoardPosition");
+                });
+
+            modelBuilder.Entity("Showcase.Domain.Entities.Game", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FinishedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("PlayerOneId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PlayerTurn")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PlayerTwoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Turns")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerOneId");
+
+                    b.HasIndex("PlayerTwoId");
+
+                    b.ToTable("Games");
+                });
+
             modelBuilder.Entity("Showcase.Domain.Identity.ApplicationRole", b =>
                 {
                     b.Property<Guid>("Id")
@@ -258,6 +312,32 @@ namespace Showcase.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Showcase.Domain.Entities.BoardPosition", b =>
+                {
+                    b.HasOne("Showcase.Domain.Entities.Game", null)
+                        .WithMany("Board")
+                        .HasForeignKey("GameId");
+                });
+
+            modelBuilder.Entity("Showcase.Domain.Entities.Game", b =>
+                {
+                    b.HasOne("Showcase.Domain.Entities.ApplicationUser", "PlayerOne")
+                        .WithMany("PlayerOneGames")
+                        .HasForeignKey("PlayerOneId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Showcase.Domain.Entities.ApplicationUser", "PlayerTwo")
+                        .WithMany("PlayerTwoGames")
+                        .HasForeignKey("PlayerTwoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("PlayerOne");
+
+                    b.Navigation("PlayerTwo");
+                });
+
             modelBuilder.Entity("Showcase.Domain.Identity.ApplicationUserRole", b =>
                 {
                     b.HasOne("Showcase.Domain.Identity.ApplicationRole", "Role")
@@ -279,7 +359,16 @@ namespace Showcase.Infrastructure.Migrations
 
             modelBuilder.Entity("Showcase.Domain.Entities.ApplicationUser", b =>
                 {
+                    b.Navigation("PlayerOneGames");
+
+                    b.Navigation("PlayerTwoGames");
+
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Showcase.Domain.Entities.Game", b =>
+                {
+                    b.Navigation("Board");
                 });
 
             modelBuilder.Entity("Showcase.Domain.Identity.ApplicationRole", b =>
