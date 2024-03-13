@@ -12,7 +12,7 @@ using Showcase.Infrastructure.Persistence;
 namespace Showcase.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240313110357_InitialCreate")]
+    [Migration("20240313120342_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

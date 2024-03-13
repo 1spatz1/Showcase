@@ -19,5 +19,5 @@ public class Game
     public DateTime UpdatedAt { get; set; }
     [Column(TypeName = "DateTime")]
     public DateTime? FinishedAt { get; set; }
-    public ICollection<BoardPosition> Board { get; set; }
+    public ICollection<BoardPosition>? Board { get; set; }
 }
