@@ -50,7 +50,6 @@ public class CreateGameCommandHandler : IRequestHandler<CreateGameCommand, Error
             return Errors.UnexpectedError;
         }
         
-        
         return new CreateGameResponse(request.UserId, request.Username, request.Token, newGame.Id);
     }
 }
