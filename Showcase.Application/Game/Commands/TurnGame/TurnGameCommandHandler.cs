@@ -30,6 +30,10 @@ public class TurnGameCommandHandler : IRequestHandler<TurnGameCommand, ErrorOr<T
         if (game is null)
             return Errors.Game.GameNotFound;
         
+        // Check if the game is already over
+        if (game.State is GameState.Over or GameState.Draw or GameState.Cancelled) 
+            return Errors.Game.GameAlreadyOver;
+        
         // CHeck if User is one of the players
         if (game.PlayerOneId != request.UserId && game.PlayerTwoId != request.UserId)
             return Errors.Authorisation.NotAllowed;
