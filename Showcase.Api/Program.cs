@@ -81,8 +81,12 @@ WebApplication app = builder.Build();
         await DbSeeder.SeedDbAsync(context, userManager, roleManager);
     }
     
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 
     app.UseCors("AllowAllOrigins");
     app.UseAuthorization();

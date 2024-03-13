@@ -1,14 +1,17 @@
 ﻿using ErrorOr;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Showcase.Api.Routes;
 using Showcase.Application.Game.Commands.CreateGame;
 using Showcase.Contracts.Game;
+using Showcase.Domain.Identity;
 
 namespace Showcase.Api.Controllers;
 
 [Route(V1Routes.Game.Controller)]
+[Authorize]
 public class GameController : ApiController
 {
     private readonly IMapper _mapper;
@@ -27,5 +30,12 @@ public class GameController : ApiController
         ErrorOr<CreateGameResponse> response = await _mediator.Send(command);
         
         return response.Match(value => Ok(_mapper.Map<CreateGameApiResponse>(value)), Problem);
+    }
+    
+    [HttpGet("test")]
+    [Authorize (Roles = IdentityNames.Roles.Administrator)]
+    public async Task<IActionResult> Test()
+    {
+        return StatusCode(501);
     }
 }
