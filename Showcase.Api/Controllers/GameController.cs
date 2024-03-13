@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Showcase.Api.Routes;
 using Showcase.Application.Game.Commands.CreateGame;
 using Showcase.Application.Game.Commands.placeTurn;
+using Showcase.Application.Game.Queries.CheckGameStatus;
 using Showcase.Contracts.Game;
 using Showcase.Domain.Identity;
 
@@ -36,10 +37,16 @@ public class GameController : ApiController
     [HttpPost(V1Routes.Game.Turn)]
     public async Task<IActionResult> Turn([FromBody] TurnGameRequest request)
     {
-        TurnGameCommand command = _mapper.Map<TurnGameCommand>(request);
-        ErrorOr<TurnGameCommandResponse> response = await _mediator.Send(command);
+        TurnGameCommand turnCommand = _mapper.Map<TurnGameCommand>(request);
+        ErrorOr<TurnGameCommandResponse> turnResponse = await _mediator.Send(turnCommand);
         
-        return response.Match(value => Ok(_mapper.Map<TurnGameApiResponse>(value)), Problem);
+        if (turnResponse.IsError)
+            return Problem(turnResponse.Errors);
+        
+        CheckGameStatusQuery checkGameStatusQuery = _mapper.Map<CheckGameStatusQuery>(request);
+        ErrorOr<CheckGameStatusResponse> checkGameStatusResponse = await _mediator.Send(checkGameStatusQuery);
+        
+        return checkGameStatusResponse.Match(value => Ok(_mapper.Map<TurnGameApiResponse>(value)), Problem);
     }
     
     [HttpGet("test")]

@@ -13,10 +13,10 @@ public class TurnGameCommandValidator : AbstractValidator<TurnGameCommand>
             .NotEmpty()
             .WithMessage("GameId must not be empty.");
         RuleFor(x => x.RowIndex)
-            .NotEmpty()
+            .GreaterThan(-1)
             .WithMessage("RowIndex must not be empty.");
         RuleFor(x => x.ColIndex)
-            .NotEmpty()
+            .GreaterThan(-1)
             .WithMessage("ColIndex must not be empty.");
     }
 }

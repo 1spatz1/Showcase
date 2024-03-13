@@ -25,11 +25,14 @@ public class TurnGameCommandHandler : IRequestHandler<TurnGameCommand, ErrorOr<T
     {
         // get the game with board
         var game = await _context.Games.Include(x => x.Board).FirstOrDefaultAsync(x => x.Id == request.GameId, cancellationToken);
-        // var game = await _context.Games.FirstOrDefaultAsync(x => x.Id == request.GameId, cancellationToken);
         
         // Check if Game exists
         if (game is null)
             return Errors.Game.GameNotFound;
+        
+        // CHeck if User is one of the players
+        if (game.PlayerOneId != request.UserId && game.PlayerTwoId != request.UserId)
+            return Errors.Authorisation.NotAllowed;
         
         // Check if Player is not the current turn
         if (game.PlayerTurn != request.UserId)
@@ -41,10 +44,6 @@ public class TurnGameCommandHandler : IRequestHandler<TurnGameCommand, ErrorOr<T
         // Check if the position is already taken
         if (game.Board!.Any(bp => bp.RowIndex == request.RowIndex && bp.ColIndex == request.ColIndex))
             return Errors.Game.InvalidMove;
-        // if (await _context.BoardPositions.AnyAsync(
-        //         bp => bp.GameId == request.GameId && bp.RowIndex == request.RowIndex && bp.ColIndex == request.ColIndex,
-        //         cancellationToken))
-            
         
         BoardPosition boardPosition = new()
         {
