@@ -16,13 +16,13 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<ApplicationUser>
 
         builder
             .HasMany(x => x.PlayerOneGames)
-            .WithOne(x => x.PlayerOne)
+            .WithOne() 
             .HasForeignKey(x => x.PlayerOneId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder
             .HasMany(x => x.PlayerTwoGames)
-            .WithOne(x => x.PlayerTwo)
+            .WithOne() 
             .HasForeignKey(x => x.PlayerTwoId)
             .OnDelete(DeleteBehavior.Restrict);
     }

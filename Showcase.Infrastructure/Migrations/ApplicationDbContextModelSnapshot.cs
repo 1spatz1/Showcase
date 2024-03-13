@@ -182,16 +182,19 @@ namespace Showcase.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("ChangedAt")
+                    b.Property<int>("ColIndex")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("DateTime");
 
-                    b.Property<Guid?>("GameId")
+                    b.Property<Guid>("GameId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("PlayerGuid")
+                    b.Property<Guid>("PlayerGuid")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Position")
+                    b.Property<int>("RowIndex")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -206,6 +209,9 @@ namespace Showcase.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("BoardSize")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("DateTime");
@@ -223,9 +229,6 @@ namespace Showcase.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("State")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Turns")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -326,25 +329,23 @@ namespace Showcase.Infrastructure.Migrations
                 {
                     b.HasOne("Showcase.Domain.Entities.Game", null)
                         .WithMany("Board")
-                        .HasForeignKey("GameId");
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Showcase.Domain.Entities.Game", b =>
                 {
-                    b.HasOne("Showcase.Domain.Entities.ApplicationUser", "PlayerOne")
+                    b.HasOne("Showcase.Domain.Entities.ApplicationUser", null)
                         .WithMany("PlayerOneGames")
                         .HasForeignKey("PlayerOneId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Showcase.Domain.Entities.ApplicationUser", "PlayerTwo")
+                    b.HasOne("Showcase.Domain.Entities.ApplicationUser", null)
                         .WithMany("PlayerTwoGames")
                         .HasForeignKey("PlayerTwoId")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("PlayerOne");
-
-                    b.Navigation("PlayerTwo");
                 });
 
             modelBuilder.Entity("Showcase.Domain.Identity.ApplicationUserRole", b =>

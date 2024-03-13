@@ -7,8 +7,10 @@ public class BoardPosition
 {
     [Key]
     public Guid Id { get; set;  }
-    public int Position { get; set; }
-    public Guid? PlayerGuid { get; set; }
+    public Guid PlayerGuid { get; set; }
+    public Guid GameId { get; set; }
+    public int RowIndex { get; set; }
+    public int ColIndex { get; set; }
     [Column(TypeName = "DateTime")]
-    public DateTime? ChangedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 }

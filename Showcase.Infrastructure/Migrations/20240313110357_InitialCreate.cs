@@ -166,7 +166,7 @@ namespace Showcase.Infrastructure.Migrations
                     PlayerTurn = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     State = table.Column<int>(type: "int", nullable: false),
                     WinnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Turns = table.Column<int>(type: "int", nullable: false),
+                    BoardSize = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "DateTime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "DateTime", nullable: false),
                     FinishedAt = table.Column<DateTime>(type: "DateTime", nullable: true)
@@ -193,10 +193,11 @@ namespace Showcase.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Position = table.Column<int>(type: "int", nullable: false),
-                    PlayerGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "DateTime", nullable: true),
-                    GameId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    PlayerGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GameId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RowIndex = table.Column<int>(type: "int", nullable: false),
+                    ColIndex = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "DateTime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -205,7 +206,8 @@ namespace Showcase.Infrastructure.Migrations
                         name: "FK_BoardPosition_Games_GameId",
                         column: x => x.GameId,
                         principalTable: "Games",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
