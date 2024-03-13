@@ -4,7 +4,7 @@ public enum GameState
 {
     WaitingForPlayerTwo,
     InProgress,
-    PlayerOneWins,
-    PlayerTwoWins,
-    Draw
+    Over,
+    Draw,
+    Cancelled
 }

@@ -1,8 +1,14 @@
-﻿namespace Showcase.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Showcase.Domain.Entities;
 
 public class BoardPosition
 {
-    public int Id { get; set; }
-    private Guid? PlayerGuid { get; set; }
-    private DateTime? ChangedAt { get; set; }
+    [Key]
+    public Guid Id { get; set;  }
+    public int Position { get; set; }
+    public Guid? PlayerGuid { get; set; }
+    [Column(TypeName = "DateTime")]
+    public DateTime? ChangedAt { get; set; }
 }

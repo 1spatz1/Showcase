@@ -162,12 +162,14 @@ namespace Showcase.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PlayerOneId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PlayerTwoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlayerTwoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     PlayerTurn = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     State = table.Column<int>(type: "int", nullable: false),
+                    WinnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Turns = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FinishedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CreatedAt = table.Column<DateTime>(type: "DateTime", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "DateTime", nullable: false),
+                    FinishedAt = table.Column<DateTime>(type: "DateTime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -190,8 +192,10 @@ namespace Showcase.Infrastructure.Migrations
                 name: "BoardPosition",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Position = table.Column<int>(type: "int", nullable: false),
+                    PlayerGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "DateTime", nullable: true),
                     GameId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>

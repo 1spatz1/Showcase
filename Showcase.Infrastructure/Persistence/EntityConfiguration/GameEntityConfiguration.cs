@@ -9,13 +9,16 @@ public class GameEntityConfiguration : IEntityTypeConfiguration<Game>
     public void Configure(EntityTypeBuilder<Game> builder)
     {
         builder
-            .HasOne(x => x.PlayerOne)
-            .WithMany(x => x.PlayerOneGames)
-            .HasForeignKey(x => x.PlayerOneId);
+            .HasOne<ApplicationUser>(g => g.PlayerOne)
+            .WithMany()
+            .HasForeignKey(g => g.PlayerOneId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder
-            .HasOne(x => x.PlayerTwo)
-            .WithMany(x => x.PlayerTwoGames)
-            .HasForeignKey(x => x.PlayerTwoId);
+            .HasOne<ApplicationUser>(g => g.PlayerTwo)
+            .WithMany()
+            .HasForeignKey(g => g.PlayerTwoId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -178,14 +178,21 @@ namespace Showcase.Infrastructure.Migrations
 
             modelBuilder.Entity("Showcase.Domain.Entities.BoardPosition", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<DateTime?>("ChangedAt")
+                        .HasColumnType("DateTime");
 
                     b.Property<Guid?>("GameId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PlayerGuid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -201,10 +208,10 @@ namespace Showcase.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("DateTime");
 
                     b.Property<DateTime?>("FinishedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("DateTime");
 
                     b.Property<Guid>("PlayerOneId")
                         .HasColumnType("uniqueidentifier");
@@ -212,7 +219,7 @@ namespace Showcase.Infrastructure.Migrations
                     b.Property<Guid?>("PlayerTurn")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("PlayerTwoId")
+                    b.Property<Guid?>("PlayerTwoId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("State")
@@ -220,6 +227,12 @@ namespace Showcase.Infrastructure.Migrations
 
                     b.Property<int>("Turns")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("DateTime");
+
+                    b.Property<Guid?>("WinnerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -327,8 +340,7 @@ namespace Showcase.Infrastructure.Migrations
                     b.HasOne("Showcase.Domain.Entities.ApplicationUser", "PlayerTwo")
                         .WithMany("PlayerTwoGames")
                         .HasForeignKey("PlayerTwoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("PlayerOne");
 
