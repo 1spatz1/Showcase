@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Showcase.Api.Routes;
 using Showcase.Application.Game.Commands.CreateGame;
+using Showcase.Application.Game.Commands.placeTurn;
 using Showcase.Contracts.Game;
 using Showcase.Domain.Identity;
 
@@ -27,9 +28,18 @@ public class GameController : ApiController
     public async Task<IActionResult> Create([FromBody] CreateGameRequest request)
     {
         CreateGameCommand command = _mapper.Map<CreateGameCommand>(request);
-        ErrorOr<CreateGameResponse> response = await _mediator.Send(command);
+        ErrorOr<CreateGameCommandResponse> response = await _mediator.Send(command);
         
         return response.Match(value => Ok(_mapper.Map<CreateGameApiResponse>(value)), Problem);
+    }
+    
+    [HttpPost(V1Routes.Game.Turn)]
+    public async Task<IActionResult> Turn([FromBody] TurnGameRequest request)
+    {
+        TurnGameCommand command = _mapper.Map<TurnGameCommand>(request);
+        ErrorOr<TurnGameCommandResponse> response = await _mediator.Send(command);
+        
+        return response.Match(value => Ok(_mapper.Map<TurnGameApiResponse>(value)), Problem);
     }
     
     [HttpGet("test")]

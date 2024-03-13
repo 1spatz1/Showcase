@@ -12,7 +12,7 @@ using Showcase.Infrastructure.Persistence;
 namespace Showcase.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240313120342_InitialCreate")]
+    [Migration("20240313142247_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -204,7 +204,7 @@ namespace Showcase.Infrastructure.Migrations
 
                     b.HasIndex("GameId");
 
-                    b.ToTable("BoardPosition");
+                    b.ToTable("BoardPositions");
                 });
 
             modelBuilder.Entity("Showcase.Domain.Entities.Game", b =>

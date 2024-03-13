@@ -22,5 +22,6 @@ public static class V1Routes
 
         public const string Create = "create";
         public const string Join = "join";
+        public const string Turn = "turn";
     }
 }

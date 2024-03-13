@@ -6,7 +6,7 @@ using Showcase.Domain.Common.Errors;
 
 namespace Showcase.Application.Game.Commands.CreateGame;
 
-public class CreateGameCommandHandler : IRequestHandler<CreateGameCommand, ErrorOr<CreateGameResponse>>
+public class CreateGameCommandHandler : IRequestHandler<CreateGameCommand, ErrorOr<CreateGameCommandResponse>>
 {
     private readonly ILogger<CreateGameCommandHandler> _logger;
     private readonly IApplicationDbContext _context;
@@ -17,7 +17,7 @@ public class CreateGameCommandHandler : IRequestHandler<CreateGameCommand, Error
         _context = context;
     }
 
-    public async Task<ErrorOr<CreateGameResponse>> Handle(CreateGameCommand request,
+    public async Task<ErrorOr<CreateGameCommandResponse>> Handle(CreateGameCommand request,
         CancellationToken cancellationToken)
     {
         var newGame = new Domain.Entities.Game
@@ -50,6 +50,6 @@ public class CreateGameCommandHandler : IRequestHandler<CreateGameCommand, Error
             return Errors.UnexpectedError;
         }
         
-        return new CreateGameResponse(request.UserId, request.Username, request.Token, newGame.Id);
+        return new CreateGameCommandResponse(request.UserId, request.Username, request.Token, newGame.Id);
     }
 }

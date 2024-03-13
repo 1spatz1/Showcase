@@ -201,7 +201,7 @@ namespace Showcase.Infrastructure.Migrations
 
                     b.HasIndex("GameId");
 
-                    b.ToTable("BoardPosition");
+                    b.ToTable("BoardPositions");
                 });
 
             modelBuilder.Entity("Showcase.Domain.Entities.Game", b =>

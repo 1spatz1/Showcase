@@ -2,9 +2,9 @@
 
 namespace Showcase.Application.Game.Commands.placeTurn;
 
-public class placeTurnCommandValidator : AbstractValidator<placeTurnCommand>
+public class TurnGameCommandValidator : AbstractValidator<TurnGameCommand>
 {
-    public placeTurnCommandValidator()
+    public TurnGameCommandValidator()
     {
         RuleFor(x => x.UserId)
             .NotEmpty()

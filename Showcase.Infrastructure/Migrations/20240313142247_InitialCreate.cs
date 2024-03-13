@@ -189,7 +189,7 @@ namespace Showcase.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BoardPosition",
+                name: "BoardPositions",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -201,9 +201,9 @@ namespace Showcase.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BoardPosition", x => x.Id);
+                    table.PrimaryKey("PK_BoardPositions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BoardPosition_Games_GameId",
+                        name: "FK_BoardPositions_Games_GameId",
                         column: x => x.GameId,
                         principalTable: "Games",
                         principalColumn: "Id",
@@ -250,8 +250,8 @@ namespace Showcase.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BoardPosition_GameId",
-                table: "BoardPosition",
+                name: "IX_BoardPositions_GameId",
+                table: "BoardPositions",
                 column: "GameId");
 
             migrationBuilder.CreateIndex(
@@ -284,7 +284,7 @@ namespace Showcase.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "BoardPosition");
+                name: "BoardPositions");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

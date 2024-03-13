@@ -1,6 +1,6 @@
 ﻿namespace Showcase.Application.Game.Commands.placeTurn;
 
-public record placeTurnCommandResponse
+public record TurnGameCommandResponse
 (
     Guid UserId, 
     Guid GameId,

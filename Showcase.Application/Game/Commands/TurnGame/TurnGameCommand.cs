@@ -3,9 +3,9 @@ using MediatR;
 
 namespace Showcase.Application.Game.Commands.placeTurn;
 
-public record placeTurnCommand(
+public record TurnGameCommand(
     Guid UserId,
     Guid GameId,
     int RowIndex,
     int ColIndex
-) : IRequest<ErrorOr<placeTurnCommandResponse>>;
+) : IRequest<ErrorOr<TurnGameCommandResponse>>;
