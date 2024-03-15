@@ -59,14 +59,8 @@ public class GameController : ApiController
 
         if (checkGameStatusResponse.Value.Draw || checkGameStatusResponse.Value.Win)
         {
-            Console.WriteLine("checkGameStatusResponse");
-            Console.WriteLine(checkGameStatusResponse);
             ChangeGameStateCommand changeGameStateCommand = _mapper.Map<ChangeGameStateCommand>(checkGameStatusResponse.Value);
-            Console.WriteLine(" MAPPED changeGameStateCommand");
-            Console.WriteLine(changeGameStateCommand);
             ErrorOr<ChangeGameStateResponse> changeGameStateResponse = await _mediator.Send(changeGameStateCommand);
-            Console.WriteLine("--- ChangeGameStateCommand ---");
-            Console.WriteLine(changeGameStateResponse);
         }
         
         return checkGameStatusResponse.Match(value => Ok(_mapper.Map<TurnGameApiResponse>(value)), Problem);
