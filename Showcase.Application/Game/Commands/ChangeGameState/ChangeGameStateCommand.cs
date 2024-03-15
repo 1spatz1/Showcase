@@ -7,6 +7,6 @@ public record ChangeGameStateCommand
 (
     Guid UserId, 
     Guid GameId,
-    bool? Win,
-    bool? Draw
+    bool Win,
+    bool Draw
 ) : IRequest<ErrorOr<ChangeGameStateResponse>>;

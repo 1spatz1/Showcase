@@ -37,18 +37,21 @@ public class ChangeGameStateCommandHandler : IRequestHandler<ChangeGameStateComm
         if (game.State is GameState.Over or GameState.Draw or GameState.Cancelled) 
             return Errors.Game.GameAlreadyOver;
 
-        if (request.Win is true)
+        if (request.Win)
         {
             game.State = GameState.Over;
             game.WinnerId = request.UserId;
+            game.FinishedAt = DateTime.UtcNow;
 
             if(await SaveToDb(game, cancellationToken) == true)
                 return new ChangeGameStateResponse(true);
         }
 
-        if (request.Draw is true)
+        if (request.Draw)
         {
             game.State = GameState.Draw;
+            game.FinishedAt = DateTime.UtcNow;
+            
             if(await SaveToDb(game, cancellationToken) == true)
                 return new ChangeGameStateResponse(true);
         }

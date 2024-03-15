@@ -62,6 +62,7 @@ public class TurnGameCommandHandler : IRequestHandler<TurnGameCommand, ErrorOr<T
         
         // Switch the player turn
         SwitchPlayerTurn(game); 
+        game.UpdatedAt = DateTime.UtcNow;
         
         try
         {

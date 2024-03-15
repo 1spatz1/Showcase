@@ -46,6 +46,7 @@ public class JoinGameCommandHandler : IRequestHandler<JoinGameCommand, ErrorOr<J
          game.PlayerTurn = randomNumber == 0 ? game.PlayerOneId : request.UserId;
          game.PlayerTwoId = request.UserId;
          game.State = GameState.InProgress;
+         game.UpdatedAt = DateTime.UtcNow;
 
          try
          {
