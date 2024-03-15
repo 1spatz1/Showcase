@@ -1,6 +1,6 @@
 ﻿namespace Showcase.Application.Game.Commands.CreateGame;
 
-public record CreateGameCommandResponse
+public record CreateGameResponse
 (
     Guid UserId,
     string Username,

@@ -1,5 +1,7 @@
 ﻿using Mapster;
+using Showcase.Application.Game.Commands.ChangeGameState;
 using Showcase.Application.Game.Commands.CreateGame;
+using Showcase.Application.Game.Commands.JoinGame;
 using Showcase.Application.Game.Commands.placeTurn;
 using Showcase.Application.Game.Queries.CheckGameStatus;
 using Showcase.Contracts.Game;
@@ -13,6 +15,9 @@ public class GameMappingConfig : IRegister
         config.NewConfig<CreateGameRequest, CreateGameCommand>();
         config.NewConfig<TurnGameRequest, CheckGameStatusQuery>();
         config.NewConfig<CheckGameStatusResponse, TurnGameApiResponse>();
-        config.NewConfig<TurnGameCommandResponse, TurnGameApiResponse>();
+        config.NewConfig<TurnGameResponse, TurnGameApiResponse>();
+        config.NewConfig<JoinGameRequest, JoinGameCommand>();
+        config.NewConfig<JoinGameResponse, JoinGameApiResponse>();
+        config.NewConfig<CheckGameStatusResponse, ChangeGameStateCommand>();
     }
 }

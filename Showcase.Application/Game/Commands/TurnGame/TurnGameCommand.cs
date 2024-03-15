@@ -8,4 +8,4 @@ public record TurnGameCommand(
     Guid GameId,
     int RowIndex,
     int ColIndex
-) : IRequest<ErrorOr<TurnGameCommandResponse>>;
+) : IRequest<ErrorOr<TurnGameResponse>>;
