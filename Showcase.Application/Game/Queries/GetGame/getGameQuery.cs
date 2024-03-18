@@ -7,6 +7,5 @@ public record GetGameQuery
 (
     Guid UserId,
     string Username,
-    string Token,
     Guid GameId
 ) : IRequest<ErrorOr<GetGameResponse>>;

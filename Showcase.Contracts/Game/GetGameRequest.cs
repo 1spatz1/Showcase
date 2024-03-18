@@ -4,6 +4,5 @@ public record GetGameRequest
 (
     Guid UserId,
     string Username,
-    string Token,
     Guid GameId    
 );

@@ -4,6 +4,5 @@ public record JoinGameResponse
 (
     Guid UserId,
     string Username,
-    string Token,
-    Domain.Entities.Game Game
+    Guid GameId
 );

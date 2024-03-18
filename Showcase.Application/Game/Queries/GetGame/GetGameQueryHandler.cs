@@ -33,6 +33,6 @@ public class GetGameQueryHandler : IRequestHandler<GetGameQuery, ErrorOr<GetGame
         if (game.PlayerOneId != request.UserId && game.PlayerOneId != request.UserId)
             return Errors.Authorisation.NotAllowed;
 
-        return new GetGameResponse(request.UserId, request.Username, request.Token, game);
+        return new GetGameResponse(request.UserId, request.Username, game);
     }
 }

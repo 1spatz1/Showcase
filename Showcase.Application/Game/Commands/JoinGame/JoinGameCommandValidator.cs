@@ -12,9 +12,6 @@ public class JoinGameCommandValidator : AbstractValidator<JoinGameCommand>
         RuleFor(x => x.Username)
             .NotEmpty()
             .WithMessage("Username must not be empty.");
-        RuleFor(x => x.Token)
-            .NotEmpty()
-            .WithMessage("Token must not be empty.");
         RuleFor(x => x.GameId)
             .NotEmpty()
             .WithMessage("GameId must not be empty.");

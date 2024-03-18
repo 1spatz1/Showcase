@@ -12,8 +12,5 @@ public class CreateGameCommandValidator : AbstractValidator<CreateGameCommand>
         RuleFor(x => x.Username)
             .NotEmpty()
             .WithMessage("Username must not be empty.");
-        RuleFor(x => x.Token)
-            .NotEmpty()
-            .WithMessage("Token must not be empty.");
     }
 }
