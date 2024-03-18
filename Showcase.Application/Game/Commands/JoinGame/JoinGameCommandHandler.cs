@@ -38,7 +38,7 @@ public class JoinGameCommandHandler : IRequestHandler<JoinGameCommand, ErrorOr<J
          return Errors.Game.GameAlreadyOver;
       
       // Check if playertwo is empty & if empty update the game with player two id and update in the database
-      if (game.PlayerTwoId == null)
+      if (game.PlayerTwoId == null && game.PlayerOneId != request.UserId)
       {
          Random random = new Random();
          int randomNumber = random.Next(0, 2);
