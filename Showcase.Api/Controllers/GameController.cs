@@ -31,6 +31,11 @@ public class GameController : ApiController
     [HttpPost(V1Routes.Game.Create)]
     public async Task<IActionResult> Create([FromBody] CreateGameRequest request)
     {
+        if (request == null)
+        {
+            return BadRequest("Request cannot be null");
+        }
+        
         CreateGameCommand command = _mapper.Map<CreateGameCommand>(request);
         ErrorOr<CreateGameResponse> response = await _mediator.Send(command);
         
@@ -40,6 +45,11 @@ public class GameController : ApiController
     [HttpPost(V1Routes.Game.Join)]
     public async Task<IActionResult> Join([FromBody] JoinGameRequest request)
     {
+        if (request == null)
+        {
+            return BadRequest("Request cannot be null");
+        }
+        
         JoinGameCommand command = _mapper.Map<JoinGameCommand>(request);
         ErrorOr<JoinGameResponse> response = await _mediator.Send(command);
 
@@ -49,6 +59,11 @@ public class GameController : ApiController
     [HttpPost(V1Routes.Game.Turn)]
     public async Task<IActionResult> Turn([FromBody] TurnGameRequest request)
     {
+        if (request == null)
+        {
+            return BadRequest("Request cannot be null");
+        }
+        
         TurnGameCommand turnCommand = _mapper.Map<TurnGameCommand>(request);
         ErrorOr<TurnGameResponse> turnResponse = await _mediator.Send(turnCommand);
         
@@ -70,6 +85,11 @@ public class GameController : ApiController
     [HttpPost(V1Routes.Game.Get)]
     public async Task<IActionResult> Get([FromBody] GetGameRequest request)
     {
+        if (request == null)
+        {
+            return BadRequest("Request cannot be null");
+        }
+        
         GetGameQuery command = _mapper.Map<GetGameQuery>(request);
         ErrorOr<GetGameResponse> response = await _mediator.Send(command);
 
