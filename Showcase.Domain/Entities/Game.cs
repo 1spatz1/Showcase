@@ -12,7 +12,7 @@ public class Game
     public Guid? PlayerTurn { get; set; }
     public GameState State  { get; set; } = GameState.WaitingForPlayerTwo;
     public Guid? WinnerId { get; set; }
-    public int BoardSize { get; set; } = 0;
+    public int BoardSize { get; set; } = 3;
     [Column(TypeName = "DateTime")]
     public DateTime CreatedAt { get; set; }
     [Column(TypeName = "DateTime")]
