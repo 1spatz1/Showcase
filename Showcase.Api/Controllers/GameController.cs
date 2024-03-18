@@ -9,6 +9,7 @@ using Showcase.Application.Game.Commands.CreateGame;
 using Showcase.Application.Game.Commands.JoinGame;
 using Showcase.Application.Game.Commands.placeTurn;
 using Showcase.Application.Game.Queries.CheckGameStatus;
+using Showcase.Application.Game.Queries.GetGame;
 using Showcase.Contracts.Game;
 using Showcase.Domain.Identity;
 
@@ -66,10 +67,12 @@ public class GameController : ApiController
         return checkGameStatusResponse.Match(value => Ok(_mapper.Map<TurnGameApiResponse>(value)), Problem);
     }
     
-    [HttpGet("test")]
-    [Authorize (Roles = IdentityNames.Roles.Administrator)]
-    public async Task<IActionResult> Test()
+    [HttpPost(V1Routes.Game.Get)]
+    public async Task<IActionResult> Get([FromBody] GetGameRequest request)
     {
-        return StatusCode(501);
+        GetGameQuery command = _mapper.Map<GetGameQuery>(request);
+        ErrorOr<GetGameResponse> response = await _mediator.Send(command);
+
+        return response.Match(value => Ok(_mapper.Map<GetGameApiResponse>(value)), Problem);
     }
 }

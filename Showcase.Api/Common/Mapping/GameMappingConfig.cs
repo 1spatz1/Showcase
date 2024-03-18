@@ -4,6 +4,7 @@ using Showcase.Application.Game.Commands.CreateGame;
 using Showcase.Application.Game.Commands.JoinGame;
 using Showcase.Application.Game.Commands.placeTurn;
 using Showcase.Application.Game.Queries.CheckGameStatus;
+using Showcase.Application.Game.Queries.GetGame;
 using Showcase.Contracts.Game;
 
 namespace Showcase.Api.Common.Mapping;
@@ -19,5 +20,7 @@ public class GameMappingConfig : IRegister
         config.NewConfig<JoinGameRequest, JoinGameCommand>();
         config.NewConfig<JoinGameResponse, JoinGameApiResponse>();
         config.NewConfig<CheckGameStatusResponse, ChangeGameStateCommand>();
+        config.NewConfig<GetGameRequest, GetGameQuery>();
+        config.NewConfig<GetGameResponse, GetGameApiResponse>();
     }
 }
