@@ -44,6 +44,15 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
                         .AllowAnyMethod()
                         .AllowAnyHeader();
                 });
+            options.AddPolicy("MyAllowSpecificOrigins",
+                builder =>
+                {
+                    builder
+                        .WithOrigins("http://localhost:3000", "https://localhost:3000", "https://webdev-cv.vercel.app") // specifying the allowed origins
+                        .WithMethods("POST", "GET", "OPTIONS") // defining the allowed HTTP methods
+                        .AllowAnyHeader() // allowing any header to be sent
+                        .AllowCredentials(); // allowing credentials
+                });
         })
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
@@ -88,7 +97,7 @@ WebApplication app = builder.Build();
         app.UseSwaggerUI();
     }
 
-    app.UseCors("AllowAllOrigins");
+    app.UseCors("MyAllowSpecificOrigins");
     app.UseAuthorization();
     
     app.MapControllers();
