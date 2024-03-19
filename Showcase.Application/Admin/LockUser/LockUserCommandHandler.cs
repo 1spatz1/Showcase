@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Showcase.Application.Common.Interfaces.Services;
 using Showcase.Domain.Common.Errors;
 using Showcase.Domain.Entities;
+using Showcase.Domain.Identity;
 
 namespace Showcase.Application.Authentication.Commands.LockUser;
 
@@ -27,6 +28,9 @@ public class LockUserCommandHandler : IRequestHandler<LockUserCommand, ErrorOr<L
         ApplicationUser? user = await _userManager.FindByEmailAsync(request.Email);
         if (user is null)
             return Errors.Authentication.InvalidCredentials;
+        
+        if(user.UserRoles.Any(role => role.Role.Name == IdentityNames.Roles.Administrator))
+            return Errors.Admin.InvalidAction;
 
         var lockUserResult = await LockUser(user);
         if (lockUserResult.IsError)

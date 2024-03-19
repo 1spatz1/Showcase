@@ -6,6 +6,7 @@ using Showcase.Application.Authentication.Commands.LockUser;
 using Showcase.Application.Common.Interfaces.Services;
 using Showcase.Domain.Common.Errors;
 using Showcase.Domain.Entities;
+using Showcase.Domain.Identity;
 
 namespace Showcase.Application.Authentication.Commands.UnlockUser;
 
@@ -27,6 +28,9 @@ public class UnlockUserCommandHandler : IRequestHandler<UnlockUserCommand, Error
         ApplicationUser? user = await _userManager.FindByEmailAsync(request.Email);
         if (user is null)
             return Errors.Authentication.InvalidCredentials;
+        
+        if(user.UserRoles.Any(role => role.Role.Name == IdentityNames.Roles.Administrator))
+            return Errors.Admin.InvalidAction;
 
         var unlockUserResult = await UnlockUser(user);
         if (unlockUserResult.IsError)
