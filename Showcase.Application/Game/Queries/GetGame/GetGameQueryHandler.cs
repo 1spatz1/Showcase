@@ -30,7 +30,7 @@ public class GetGameQueryHandler : IRequestHandler<GetGameQuery, ErrorOr<GetGame
             return Errors.Game.GameNotFound;
         
         // Check if playerid is not equal to any of playerid's
-        if (game.PlayerOneId != request.UserId && game.PlayerOneId != request.UserId)
+        if (game.PlayerOneId != request.UserId && game.PlayerTwoId != request.UserId)
             return Errors.Authorisation.NotAllowed;
 
         return new GetGameResponse(request.UserId, request.Username, game);
