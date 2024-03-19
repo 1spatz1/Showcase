@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Events;
+using Showcase.Api.Middleware;
 using Showcase.Application;
 using Showcase.Application.Common.Interfaces.Persistence;
 using Showcase.Domain.Entities;
@@ -99,6 +100,8 @@ WebApplication app = builder.Build();
 
     app.UseCors("MyAllowSpecificOrigins");
     app.UseAuthorization();
+
+    app.UseMiddleware<CheckLockoutMiddleware>();
     
     app.MapControllers();
     app.Run();
