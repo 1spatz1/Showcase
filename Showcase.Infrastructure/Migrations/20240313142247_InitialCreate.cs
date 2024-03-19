@@ -156,6 +156,60 @@ namespace Showcase.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Games",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlayerOneId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlayerTwoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    PlayerTurn = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    State = table.Column<int>(type: "int", nullable: false),
+                    WinnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    BoardSize = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "DateTime", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "DateTime", nullable: false),
+                    FinishedAt = table.Column<DateTime>(type: "DateTime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Games", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Games_AspNetUsers_PlayerOneId",
+                        column: x => x.PlayerOneId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Games_AspNetUsers_PlayerTwoId",
+                        column: x => x.PlayerTwoId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BoardPositions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlayerGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GameId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RowIndex = table.Column<int>(type: "int", nullable: false),
+                    ColIndex = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "DateTime", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BoardPositions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BoardPositions_Games_GameId",
+                        column: x => x.GameId,
+                        principalTable: "Games",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -194,6 +248,21 @@ namespace Showcase.Infrastructure.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BoardPositions_GameId",
+                table: "BoardPositions",
+                column: "GameId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Games_PlayerOneId",
+                table: "Games",
+                column: "PlayerOneId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Games_PlayerTwoId",
+                table: "Games",
+                column: "PlayerTwoId");
         }
 
         /// <inheritdoc />
@@ -215,7 +284,13 @@ namespace Showcase.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "BoardPositions");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Games");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

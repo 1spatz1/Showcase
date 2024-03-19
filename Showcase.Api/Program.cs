@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Events;
+using Showcase.Api.Middleware;
 using Showcase.Application;
 using Showcase.Application.Common.Interfaces.Persistence;
 using Showcase.Domain.Entities;
@@ -43,6 +44,15 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
                     builder.AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader();
+                });
+            options.AddPolicy("MyAllowSpecificOrigins",
+                builder =>
+                {
+                    builder
+                        .WithOrigins("http://localhost:3000", "https://localhost:3000", "https://webdev-cv.vercel.app") // specifying the allowed origins
+                        .WithMethods("POST", "GET", "OPTIONS") // defining the allowed HTTP methods
+                        .AllowAnyHeader() // allowing any header to be sent
+                        .AllowCredentials(); // allowing credentials
                 });
         })
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -81,11 +91,17 @@ WebApplication app = builder.Build();
         await DbSeeder.SeedDbAsync(context, userManager, roleManager);
     }
     
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 
-    app.UseCors("AllowAllOrigins");
+    app.UseCors("MyAllowSpecificOrigins");
     app.UseAuthorization();
+
+    app.UseMiddleware<CheckLockoutMiddleware>();
     
     app.MapControllers();
     app.Run();
