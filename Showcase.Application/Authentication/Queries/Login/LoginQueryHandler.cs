@@ -30,6 +30,10 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<Authenticat
         if (findByEmailAsync is null)
             return Errors.Authentication.InvalidCredentials;
 
+        // Check if the user is locked out
+        if (await _userManager.IsLockedOutAsync(findByEmailAsync))
+            return Errors.Authentication.UserLockedOut;
+
         // Check if Password is correct
         bool result = await _userManager.CheckPasswordAsync(findByEmailAsync, request.Password);
         if (!result)

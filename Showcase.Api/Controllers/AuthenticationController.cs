@@ -28,6 +28,11 @@ public class AuthenticationController : ApiController
     [HttpPost(V1Routes.Authentication.Login)]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
+        if (request == null)
+        {
+            return BadRequest("Request cannot be null");
+        }
+        
         LoginQuery query = _mapper.Map<LoginQuery>(request);
         ErrorOr<AuthenticationResponse> response = await _mediator.Send(query);
         
@@ -37,6 +42,11 @@ public class AuthenticationController : ApiController
     [HttpPost(V1Routes.Authentication.Register)]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
+        if (request == null)
+        {
+            return BadRequest("Request cannot be null");
+        }
+        
         RegisterCommand command = _mapper.Map<RegisterCommand>(request);
         ErrorOr<AuthenticationResponse> response = await _mediator.Send(command);
         

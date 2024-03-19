@@ -6,5 +6,5 @@ namespace Showcase.Application.Authentication.Commands.LockUser;
 public record LockUserCommand
 (
     string Email,
-    string DurationDays
+    int DurationDays
 ) : IRequest<ErrorOr<LockUserResponse>>;

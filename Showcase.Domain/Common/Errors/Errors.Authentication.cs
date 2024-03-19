@@ -15,6 +15,10 @@ public static partial class Errors
         public static Error InvalidCredentials = Error.Unauthorized(
             $"{nameof(Authentication)}.{nameof(InvalidCredentials)}",
             "Invalid username or password");
+        
+        public static Error UserLockedOut = Error.Unauthorized(
+            $"{nameof(Authentication)}.{nameof(UserLockedOut)}",
+            "User is currently locked out");
 
         public static Error InvalidToken =
             Error.Unauthorized($"{nameof(Authentication)}.{nameof(InvalidToken)}", "Invalid token");

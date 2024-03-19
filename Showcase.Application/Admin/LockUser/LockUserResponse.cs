@@ -1,3 +1,6 @@
 ﻿namespace Showcase.Application.Authentication.Commands.LockUser;
 
-public record LockUserResponse();
+public record LockUserResponse
+(
+    bool Success
+);
