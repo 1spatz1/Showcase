@@ -1,7 +1,5 @@
 ﻿using Showcase.Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
 
 namespace Showcase.Api.Middleware;
 
