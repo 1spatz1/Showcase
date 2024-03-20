@@ -53,4 +53,13 @@ public class JwtTokenService : IJwtTokenService
         _logger.LogInformation("Created new token for user {user}", user.UserName);
         return generateUserTokenAsync;
     }
+
+    public Guid DecodeUserIdFromToken(string token)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var jwtToken = tokenHandler.ReadJwtToken(token);
+        var id = Guid.Parse(jwtToken.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+
+        return id;
+    }
 }
