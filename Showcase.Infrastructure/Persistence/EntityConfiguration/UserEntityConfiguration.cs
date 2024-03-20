@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Showcase.Domain.Entities;
+using Showcase.Domain.Identity;
 
 namespace Showcase.Infrastructure.Persistence.EntityConfiguration;
 
@@ -25,5 +26,11 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<ApplicationUser>
             .WithOne() 
             .HasForeignKey(x => x.PlayerTwoId)
             .OnDelete(DeleteBehavior.Restrict);
+        
+        builder
+            .HasOne(x => x.UserTotpSecret)
+            .WithOne(x => x.User)
+            .HasForeignKey<UserTotpSecret>(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
