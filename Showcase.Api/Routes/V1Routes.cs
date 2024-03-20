@@ -8,6 +8,8 @@ public static class V1Routes
 
         public const string Login = "login";
         public const string Register = "register";
+        public const string ConfigureTotp = "configuretotp";
+        public const string DeleteTotp = "deletetotp";
     }
     public static class Contact
     {

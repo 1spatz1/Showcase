@@ -52,4 +52,18 @@ public class AuthenticationController : ApiController
         
         return response.Match(value => Ok(_mapper.Map<AuthenticationApiResponse>(value)), Problem);
     }
+    
+    [HttpPost(V1Routes.Authentication.ConfigureTotp)]
+    public async Task<IActionResult> ConfigureTotp([FromBody] ConfigureTotpRequest request)
+    {
+        if (request == null)
+        {
+            return BadRequest("Request cannot be null");
+        }
+        
+        RegisterCommand command = _mapper.Map<RegisterCommand>(request);
+        ErrorOr<AuthenticationResponse> response = await _mediator.Send(command);
+        
+        return response.Match(value => Ok(_mapper.Map<ConfigureTotpApiResponse>(value)), Problem);
+    }
 }
