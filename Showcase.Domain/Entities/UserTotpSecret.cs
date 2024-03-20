@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Showcase.Domain.Entities;
 
-namespace Showcase.Domain.Identity;
+namespace Showcase.Domain.Entities;
 
 public class UserTotpSecret
 {

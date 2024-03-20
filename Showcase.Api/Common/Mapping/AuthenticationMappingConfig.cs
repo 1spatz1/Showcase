@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Showcase.Application.Authentication.Commands.DisableTotp;
 using Showcase.Application.Authentication.Commands.Register;
 using Showcase.Application.Authentication.Common;
 using Showcase.Application.Authentication.Queries.Login;
@@ -13,5 +14,7 @@ public class AuthenticationMappingConfig : IRegister
         config.NewConfig<RegisterRequest, RegisterCommand>();
         config.NewConfig<LoginRequest, LoginQuery>();
         config.NewConfig<AuthenticationResponse, AuthenticationApiResponse>();
+        config.NewConfig<DisableTotpRequest, DisableTotpCommand>();
+        config.NewConfig<DisableTotpResponse, DisableTotpApiResponse>();
     }
 }

@@ -12,11 +12,11 @@ namespace Showcase.Application.Authentication.Commands.ConfigureTotp;
 
 public class ConfigureTotpCommandHandler : IRequestHandler<ConfigureTotpCommand, ErrorOr<ConfigureTotpResponse>>
 {
-    private readonly ILogger<LockUserCommandHandler> _logger;
+    private readonly ILogger<ConfigureTotpCommandHandler> _logger;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IApplicationDbContext _context;
     
-    public ConfigureTotpCommandHandler(UserManager<ApplicationUser> userManager, ILogger<LockUserCommandHandler> logger, IApplicationDbContext context)
+    public ConfigureTotpCommandHandler(UserManager<ApplicationUser> userManager, ILogger<ConfigureTotpCommandHandler> logger, IApplicationDbContext context)
     {
         _userManager = userManager;
         _logger = logger;

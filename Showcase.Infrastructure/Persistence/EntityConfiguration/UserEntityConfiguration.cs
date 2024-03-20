@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Showcase.Domain.Entities;
-using Showcase.Domain.Identity;
 
 namespace Showcase.Infrastructure.Persistence.EntityConfiguration;
 
