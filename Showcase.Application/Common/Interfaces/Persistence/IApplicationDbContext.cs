@@ -8,6 +8,7 @@ public interface IApplicationDbContext
 {
     DbSet<Domain.Entities.Game> Games { get; }
     DbSet<BoardPosition> BoardPositions { get; }
+    DbSet<ApplicationUser> Users { get; }
     DatabaseFacade Database { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);

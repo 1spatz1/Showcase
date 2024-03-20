@@ -1,3 +1,3 @@
-﻿namespace Showcase.Contracts.Moderation;
+﻿namespace Showcase.Contracts.Admin;
 
 public record LockUserRequest(string Email, int DurationDays);

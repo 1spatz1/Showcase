@@ -10,5 +10,9 @@ public static partial class Errors
             $"{nameof(Authentication)}.{nameof(InvalidAction)}",
             "Invalid action");
         
+        public static class GetAllusers
+        {
+            public static Error Error = Error.Unexpected($"{nameof(Admin)}.{nameof(GetAllusers)}.{nameof(Error)}", "An error occurred while processing your request");
+        }
     }
 }

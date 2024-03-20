@@ -25,6 +25,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     //Games
     public DbSet<Game> Games { get; set; }
     public DbSet<BoardPosition> BoardPositions { get; set;  }
+    public DbSet<ApplicationUser> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

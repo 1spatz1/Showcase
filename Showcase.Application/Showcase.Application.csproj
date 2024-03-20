@@ -3,6 +3,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Showcase.Domain\Showcase.Domain.csproj" />
       <ProjectReference Include="..\Showcase.Utilities\Showcase.Utilities.csproj" />
+      <ProjectReference Include="..\Showcase.Contracts\Showcase.Contracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -21,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Admin\" />
+      <Folder Include="Admin\Commands\" />
     </ItemGroup>
 
     <PropertyGroup>

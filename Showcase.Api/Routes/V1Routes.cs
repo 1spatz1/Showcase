@@ -32,5 +32,6 @@ public static class V1Routes
         
         public const string LockUser = "lock";
         public const string UnlockUser = "unlock";
+        public const string GetAllUsers = "users";
     }
 }

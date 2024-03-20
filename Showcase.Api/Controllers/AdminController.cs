@@ -4,9 +4,10 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Showcase.Api.Routes;
+using Showcase.Application.Admin.Queries.GetUnlockedUsers;
 using Showcase.Application.Authentication.Commands.LockUser;
 using Showcase.Application.Authentication.Commands.UnlockUser;
-using Showcase.Contracts.Moderation;
+using Showcase.Contracts.Admin;
 using Showcase.Domain.Identity;
 
 namespace Showcase.Api.Controllers;
@@ -51,4 +52,14 @@ public class AdminController : ApiController
         
         return response.Match(value => Ok(_mapper.Map<UnlockUserApiResponse>(value)), Problem);
     }
+    
+    [HttpGet(V1Routes.Admin.GetAllUsers)]
+    public async Task<IActionResult> GetLockedUsers()
+    {
+        GetAllUsersQuery query = _mapper.Map<GetAllUsersQuery>(new GetAllUsersRequest());
+        ErrorOr<GetAllUsersResponse> response = await _mediator.Send(query);
+
+        return response.Match(value => Ok(_mapper.Map<GetAllUsersApiResponse>(value)), Problem);
+    }
+    
 }
