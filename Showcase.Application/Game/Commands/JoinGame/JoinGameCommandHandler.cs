@@ -30,8 +30,6 @@ public class JoinGameCommandHandler : IRequestHandler<JoinGameCommand, ErrorOr<J
          return Errors.Game.GameNotFound;
       
       // Check if playertwo is not empty & playerid is not equal to any of playerid's
-      Console.WriteLine("---joingamecommand - pre check");
-      Console.WriteLine(game.PlayerTwoId + " " + game.PlayerOneId + " " + request.UserId);
       if (game.PlayerTwoId != null && game.PlayerOneId != request.UserId && game.PlayerTwoId != request.UserId)
          return Errors.Authorisation.NotAllowed;
       

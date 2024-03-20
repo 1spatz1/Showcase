@@ -58,10 +58,8 @@ public class UnlockUserCommandHandler : IRequestHandler<UnlockUserCommand, Error
     private async Task<ErrorOr<Unit>> SetLockoutEndDate(ApplicationUser user)
     {
         var result = await _userManager.SetLockoutEndDateAsync(user, _dateTimeProvider.UtcNow.Subtract(TimeSpan.FromMinutes(1)));
-        Console.WriteLine(_dateTimeProvider.UtcNow.Subtract(TimeSpan.FromMinutes(1)));
         if (!result.Succeeded)
         {
-            Console.WriteLine(result.Errors.ToString());
             _logger.LogError("Failed to set lockout end date for user with email {Email} in database: {Message}", user.Email, result.Errors);
             return Errors.UnexpectedError;
         }
