@@ -50,7 +50,7 @@ public class ConfigureTotpCommandHandler : IRequestHandler<ConfigureTotpCommand,
         {
             rng.GetBytes(randomBytes);
         }
-        
-        return randomBytes.ToBase32();
+
+        return "";
     }
 }

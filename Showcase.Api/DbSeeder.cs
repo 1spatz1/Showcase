@@ -41,7 +41,7 @@ public class DbSeeder
                 UserName = "super-admin",
                 Email = AdminShowcaseInternal
             };
-            IdentityResult result = await userManager.CreateAsync(user, "ShowcaseAPI@AdminPassword_ChangeMe-123");
+                IdentityResult result = await userManager.CreateAsync(user, "ShowcaseAPI@AdminPassword_ChangeMe-123");
             if (result.Succeeded)
             {
                 user = await userManager.FindByEmailAsync(AdminShowcaseInternal);
