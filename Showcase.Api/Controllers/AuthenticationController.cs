@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Showcase.Api.Routes;
-using Showcase.Application.Authentication.Commands.DisableTotp;
 using Showcase.Application.Authentication.Commands.Register;
 using Showcase.Application.Authentication.Common;
 using Showcase.Application.Authentication.Queries.Login;
@@ -30,6 +29,7 @@ public class AuthenticationController : ApiController
     [HttpPost(V1Routes.Authentication.Login)]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
+        
         if (request == null)
         {
             return BadRequest("Request cannot be null");
@@ -53,35 +53,5 @@ public class AuthenticationController : ApiController
         ErrorOr<AuthenticationResponse> response = await _mediator.Send(command);
         
         return response.Match(value => Ok(_mapper.Map<AuthenticationApiResponse>(value)), Problem);
-    }
-    
-    [HttpPost(V1Routes.Authentication.ConfigureTotp)]
-    [Authorize]
-    public async Task<IActionResult> ConfigureTotp([FromBody] ConfigureTotpRequest request)
-    {
-        if (request == null)
-        {
-            return BadRequest("Request cannot be null");
-        }
-        
-        RegisterCommand command = _mapper.Map<RegisterCommand>(request);
-        ErrorOr<AuthenticationResponse> response = await _mediator.Send(command);
-        
-        return response.Match(value => Ok(_mapper.Map<ConfigureTotpApiResponse>(value)), Problem);
-    }
-    
-    [HttpPost(V1Routes.Authentication.DisableTotp)]
-    [Authorize]
-    public async Task<IActionResult> DisableTotp([FromBody] DisableTotpRequest request)
-    {
-        if (request == null)
-        {
-            return BadRequest("Request cannot be null");
-        }
-        
-        DisableTotpCommand command = _mapper.Map<DisableTotpCommand>(request);
-        ErrorOr<DisableTotpResponse> response = await _mediator.Send(command);
-        
-        return response.Match(value => Ok(_mapper.Map<DisableTotpApiResponse>(value)), Problem);
     }
 }

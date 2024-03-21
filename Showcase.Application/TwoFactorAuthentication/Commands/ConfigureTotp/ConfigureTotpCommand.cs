@@ -1,7 +1,7 @@
 ﻿using ErrorOr;
 using MediatR;
 
-namespace Showcase.Application.Authentication.Commands.ConfigureTotp;
+namespace Showcase.Application.TwoFactorAuthentication.Commands.ConfigureTotp;
 
 public record ConfigureTotpCommand
 (

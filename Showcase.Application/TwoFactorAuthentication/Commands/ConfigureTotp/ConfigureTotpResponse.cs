@@ -1,4 +1,4 @@
-﻿namespace Showcase.Application.Authentication.Commands.ConfigureTotp;
+﻿namespace Showcase.Application.TwoFactorAuthentication.Commands.ConfigureTotp;
 
 public record ConfigureTotpResponse
     (

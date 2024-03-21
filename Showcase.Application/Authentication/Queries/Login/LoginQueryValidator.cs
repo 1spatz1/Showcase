@@ -15,5 +15,7 @@ public class LoginQueryValidator : AbstractValidator<LoginQuery>
         RuleFor(x => x.Password)
             .MaximumLength(1024)
             .NotEmpty();
+        RuleFor(x => x.Token)
+            .MaximumLength(6);
     }
 }

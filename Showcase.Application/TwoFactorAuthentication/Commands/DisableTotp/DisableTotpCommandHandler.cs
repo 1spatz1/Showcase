@@ -1,14 +1,13 @@
-﻿using System.Security.Cryptography;
-using ErrorOr;
+﻿using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Showcase.Application.Authentication.Commands.ConfigureTotp;
 using Showcase.Application.Common.Interfaces.Persistence;
 using Showcase.Domain.Common.Errors;
 using Showcase.Domain.Entities;
 
-namespace Showcase.Application.Authentication.Commands.DisableTotp;
+namespace Showcase.Application.TwoFactorAuthentication.Commands.DisableTotp;
 
 public class DisableTotpCommandHandler : IRequestHandler<DisableTotpCommand, ErrorOr<DisableTotpResponse>>
 {
@@ -36,7 +35,7 @@ public class DisableTotpCommandHandler : IRequestHandler<DisableTotpCommand, Err
             return Errors.UnexpectedError;
         }
         
-        var userTotpSecret = await _context.UserTotpSecrets.FindAsync(request.UserId);
+        var userTotpSecret = await _context.UserTotpSecrets.FirstOrDefaultAsync(x => x.UserId == user.Id, cancellationToken);
         if (userTotpSecret is not null)
         {
             _context.UserTotpSecrets.Remove(userTotpSecret);

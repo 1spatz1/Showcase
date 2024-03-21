@@ -42,4 +42,10 @@ public class EnvironmentReader
         public static string ConnectionString => Environment.GetEnvironmentVariable("DATABASE_CONNECTIONSTRING") ??
                                                  throw new InvalidOperationException();
     }
+    
+    public static class TwoFactorAuthentication
+    {
+        public static string Issuer => Environment.GetEnvironmentVariable("TOTP_ISSUER") ??
+                                             throw new InvalidOperationException();
+    }
 }

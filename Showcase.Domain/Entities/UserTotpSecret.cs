@@ -9,5 +9,4 @@ public class UserTotpSecret
     public Guid UserId { get; set; }
     public ApplicationUser User { get; set; }
     public string TotpSecret { get; set; }
-    public ICollection<string>? BackupCodes { get; set; }
 }

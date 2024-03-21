@@ -1,4 +1,4 @@
-﻿namespace Showcase.Contracts.Authentication;
+﻿namespace Showcase.Contracts.TwoFactorAuthentication;
 
 public record DisableTotpRequest
 (

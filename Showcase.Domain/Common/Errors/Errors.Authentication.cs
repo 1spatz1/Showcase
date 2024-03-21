@@ -19,10 +19,6 @@ public static partial class Errors
         public static Error UserLockedOut = Error.Unauthorized(
             $"{nameof(Authentication)}.{nameof(UserLockedOut)}",
             "User is currently locked out");
-        
-        public static Error TotpAlreadyConfigured = Error.Conflict(
-            $"{nameof(Authentication)}.{nameof(TotpAlreadyConfigured)}",
-            "2FA is already configured for this user");
 
         public static Error InvalidToken =
             Error.Unauthorized($"{nameof(Authentication)}.{nameof(InvalidToken)}", "Invalid token");

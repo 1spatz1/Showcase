@@ -30,6 +30,7 @@ namespace Showcase.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TotpSecretId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -189,6 +190,25 @@ namespace Showcase.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserTotpSecrets",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TotpSecret = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTotpSecrets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserTotpSecrets_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BoardPositions",
                 columns: table => new
                 {
@@ -263,6 +283,12 @@ namespace Showcase.Infrastructure.Migrations
                 name: "IX_Games_PlayerTwoId",
                 table: "Games",
                 column: "PlayerTwoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTotpSecrets_UserId",
+                table: "UserTotpSecrets",
+                column: "UserId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -285,6 +311,9 @@ namespace Showcase.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "BoardPositions");
+
+            migrationBuilder.DropTable(
+                name: "UserTotpSecrets");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

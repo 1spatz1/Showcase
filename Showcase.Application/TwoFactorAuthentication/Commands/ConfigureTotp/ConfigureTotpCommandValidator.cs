@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace Showcase.Application.Authentication.Commands.DisableTotp;
+namespace Showcase.Application.TwoFactorAuthentication.Commands.ConfigureTotp;
 
-public class DisableTotpCommandValidator : AbstractValidator<DisableTotpCommand>
+public class ConfigureTotpCommandValidator : AbstractValidator<ConfigureTotpCommand>
 {
-    public DisableTotpCommandValidator()
+    public ConfigureTotpCommandValidator()
     {
         RuleFor(x => x.UserId)
             .NotEmpty()

@@ -8,8 +8,6 @@ public static class V1Routes
 
         public const string Login = "login";
         public const string Register = "register";
-        public const string ConfigureTotp = "configuretotp";
-        public const string DisableTotp = "disabletotp";
     }
     public static class Contact
     {
@@ -35,5 +33,15 @@ public static class V1Routes
         public const string LockUser = "lock";
         public const string UnlockUser = "unlock";
         public const string GetAllUsers = "users";
+    }
+    
+    public static class TwoFactorAuthentication
+    {
+        public const string Controller = "/2fa";
+        
+        public const string Configure = "configure";
+        public const string Disable = "disable";
+        public const string Enable = "enable";
+        public const string Verify = "verify";
     }
 }

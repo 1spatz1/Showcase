@@ -12,8 +12,8 @@ using Showcase.Infrastructure.Persistence;
 namespace Showcase.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240320201625_AddedTotpSecret")]
-    partial class AddedTotpSecret
+    [Migration("20240321201154_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -159,7 +159,7 @@ namespace Showcase.Infrastructure.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("TotpSecretId")
+                    b.Property<Guid?>("TotpSecretId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -252,6 +252,27 @@ namespace Showcase.Infrastructure.Migrations
                     b.ToTable("Games");
                 });
 
+            modelBuilder.Entity("Showcase.Domain.Entities.UserTotpSecret", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TotpSecret")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserTotpSecrets");
+                });
+
             modelBuilder.Entity("Showcase.Domain.Identity.ApplicationRole", b =>
                 {
                     b.Property<Guid>("Id")
@@ -293,30 +314,6 @@ namespace Showcase.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Showcase.Domain.Identity.UserTotpSecret", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("BackupCodes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TotpSecret")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("UserTotpSecret");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -378,6 +375,17 @@ namespace Showcase.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
+            modelBuilder.Entity("Showcase.Domain.Entities.UserTotpSecret", b =>
+                {
+                    b.HasOne("Showcase.Domain.Entities.ApplicationUser", "User")
+                        .WithOne("UserTotpSecret")
+                        .HasForeignKey("Showcase.Domain.Entities.UserTotpSecret", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Showcase.Domain.Identity.ApplicationUserRole", b =>
                 {
                     b.HasOne("Showcase.Domain.Identity.ApplicationRole", "Role")
@@ -393,17 +401,6 @@ namespace Showcase.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Showcase.Domain.Identity.UserTotpSecret", b =>
-                {
-                    b.HasOne("Showcase.Domain.Entities.ApplicationUser", "User")
-                        .WithOne("UserTotpSecret")
-                        .HasForeignKey("Showcase.Domain.Identity.UserTotpSecret", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("User");
                 });
