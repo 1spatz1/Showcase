@@ -10,7 +10,6 @@ public class VerifyTotpQueryValidator : AbstractValidator<VerifyTotpQuery>
             .NotEmpty()
             .WithMessage("UserId must not be empty.");
         RuleFor(x => x.Token)
-            .NotEmpty()
-            .WithMessage("Token must not be empty.");
+            .MaximumLength(8);
     }
 }

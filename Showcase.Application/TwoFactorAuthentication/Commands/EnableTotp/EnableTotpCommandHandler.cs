@@ -36,8 +36,7 @@ public class EnableTotpCommandHandler : IRequestHandler<EnableTotpCommand, Error
         if (findByGuidAsync is null)
             return Errors.Authentication.InvalidCredentials;
         
-        var totpSecret = await _context.UserTotpSecrets.FirstOrDefaultAsync(x => x.UserId == findByGuidAsync.Id, cancellationToken);
-        if (totpSecret is not null)
+        if (findByGuidAsync.TwoFactorEnabled)
             return Errors.TwoFactorAuthentication.TotpAlreadyConfigured;
         
         VerifyTotpQuery verifyTotpQuery = _mapper.Map<VerifyTotpQuery>(request);

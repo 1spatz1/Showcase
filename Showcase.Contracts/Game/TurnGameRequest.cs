@@ -2,8 +2,8 @@
 
 public record TurnGameRequest
 (
-    Guid UserId,
     Guid GameId,
     int RowIndex,
-    int ColIndex
+    int ColIndex,
+    string UserId = ""
 );

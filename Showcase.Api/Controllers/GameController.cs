@@ -38,7 +38,12 @@ public class GameController : ApiController
             return BadRequest("Request cannot be null");
         }
         
-        CreateGameCommand command = _mapper.Map<CreateGameCommand>(request);
+        CreateGameRequest requestWithUserId = request with 
+        {
+            UserId = await GetUserIdFromTokenAsync()
+        };
+        
+        CreateGameCommand command = _mapper.Map<CreateGameCommand>(requestWithUserId);
         ErrorOr<CreateGameResponse> response = await _mediator.Send(command);
         
         return response.Match(value => Ok(_mapper.Map<CreateGameApiResponse>(value)), Problem);
@@ -52,7 +57,12 @@ public class GameController : ApiController
             return BadRequest("Request cannot be null");
         }
         
-        JoinGameCommand command = _mapper.Map<JoinGameCommand>(request);
+        JoinGameRequest requestWithUserId = request with 
+        {
+            UserId = await GetUserIdFromTokenAsync()
+        };
+        
+        JoinGameCommand command = _mapper.Map<JoinGameCommand>(requestWithUserId);
         ErrorOr<JoinGameResponse> response = await _mediator.Send(command);
 
         return response.Match(value => Ok(_mapper.Map<JoinGameApiResponse>(value)), Problem);
@@ -66,13 +76,18 @@ public class GameController : ApiController
             return BadRequest("Request cannot be null");
         }
         
-        TurnGameCommand turnCommand = _mapper.Map<TurnGameCommand>(request);
+        TurnGameRequest requestWithUserId = request with 
+        {
+            UserId = await GetUserIdFromTokenAsync()
+        };
+        
+        TurnGameCommand turnCommand = _mapper.Map<TurnGameCommand>(requestWithUserId);
         ErrorOr<TurnGameResponse> turnResponse = await _mediator.Send(turnCommand);
         
         if (turnResponse.IsError)
             return Problem(turnResponse.Errors);
         
-        CheckGameStatusQuery checkGameStatusQuery = _mapper.Map<CheckGameStatusQuery>(request);
+        CheckGameStatusQuery checkGameStatusQuery = _mapper.Map<CheckGameStatusQuery>(requestWithUserId);
         ErrorOr<CheckGameStatusResponse> checkGameStatusResponse = await _mediator.Send(checkGameStatusQuery);
 
         if (checkGameStatusResponse.Value.Draw || checkGameStatusResponse.Value.Win)
@@ -92,7 +107,12 @@ public class GameController : ApiController
             return BadRequest("Request cannot be null");
         }
         
-        GetGameQuery command = _mapper.Map<GetGameQuery>(request);
+        GetGameRequest requestWithUserId = request with 
+        {
+            UserId = await GetUserIdFromTokenAsync()
+        };
+        
+        GetGameQuery command = _mapper.Map<GetGameQuery>(requestWithUserId);
         ErrorOr<GetGameResponse> response = await _mediator.Send(command);
 
         return response.Match(value => Ok(_mapper.Map<GetGameApiResponse>(value)), Problem);

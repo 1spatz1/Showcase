@@ -2,7 +2,6 @@
 
 public record JoinGameRequest
 (
-    Guid UserId,
-    string Username,
-    Guid GameId    
+    Guid GameId,
+    string UserId = ""
 );

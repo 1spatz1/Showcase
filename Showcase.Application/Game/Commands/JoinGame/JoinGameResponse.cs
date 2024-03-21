@@ -3,6 +3,5 @@
 public record JoinGameResponse
 (
     Guid UserId,
-    string Username,
     Guid GameId
 );

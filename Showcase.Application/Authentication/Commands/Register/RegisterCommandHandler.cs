@@ -31,6 +31,9 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<A
     public async Task<ErrorOr<AuthenticationResponse>> Handle(RegisterCommand request,
         CancellationToken cancellationToken)
     {
+        if (request.Password != request.ConfirmPassword)
+            return Errors.Authentication.PasswordsDoNotMatch;
+        
         ApplicationUser user = new()
         {
             UserName = request.Username.ToLower(),

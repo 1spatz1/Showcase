@@ -57,12 +57,12 @@ public class JoinGameCommandHandler : IRequestHandler<JoinGameCommand, ErrorOr<J
             _logger.LogError(ex, "Failed to update game with PlayerTwoId in database: {Message}", ex.Message);
             return Errors.UnexpectedError;
          }
-         return new JoinGameResponse(request.UserId, request.Username, game.Id);
+         return new JoinGameResponse(request.UserId, game.Id);
       }
       
       // Check if request Player is PlayerOne or PlayerTwo
       if (request.UserId == game.PlayerOneId || request.UserId == game.PlayerTwoId)
-         return new JoinGameResponse(request.UserId, request.Username, game.Id);
+         return new JoinGameResponse(request.UserId, game.Id);
 
       return Errors.UnexpectedError;
    }

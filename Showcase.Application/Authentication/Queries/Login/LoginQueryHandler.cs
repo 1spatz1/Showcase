@@ -46,14 +46,17 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<Authenticat
         if (!result)
             return Errors.Authentication.InvalidCredentials;
         
-        VerifyTotpQuery verifyTotpQuery = new VerifyTotpQuery(request.Token, findByEmailAsync.Id);
-        ErrorOr<VerifyTotpResponse> verifyTotpResponse = await _mediator.Send(verifyTotpQuery);
+        if (findByEmailAsync.TwoFactorEnabled)
+        {
+            VerifyTotpQuery verifyTotpQuery = new VerifyTotpQuery(request.Token, findByEmailAsync.Id);
+            ErrorOr<VerifyTotpResponse> verifyTotpResponse = await _mediator.Send(verifyTotpQuery);
+            
+            if (verifyTotpResponse.IsError)
+                return verifyTotpResponse.Errors;
         
-        if (verifyTotpResponse.IsError)
-            return verifyTotpResponse.Errors;
-        
-        if (verifyTotpResponse.Value.Success == false)
-            return Errors.TwoFactorAuthentication.TotpFailure;
+            if (verifyTotpResponse.Value.Success == false)
+                return Errors.TwoFactorAuthentication.TotpFailure;
+        }
 
         string token = await _jwtTokenService.GenerateUserTokenAsync(findByEmailAsync);
 

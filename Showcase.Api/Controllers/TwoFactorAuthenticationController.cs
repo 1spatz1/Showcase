@@ -29,6 +29,11 @@ public class TwoFactorAuthenticationController : ApiController
     [HttpPost(V1Routes.TwoFactorAuthentication.Configure)]
     public async Task<IActionResult> Configure([FromBody] ConfigureTotpRequest request)
     {
+        if (request == null)
+        {
+            return BadRequest("Request cannot be null");
+        }
+        
         ConfigureTotpRequest requestWithUserId = request with 
         {
             UserId = await GetUserIdFromTokenAsync()
@@ -43,6 +48,11 @@ public class TwoFactorAuthenticationController : ApiController
     [HttpPost(V1Routes.TwoFactorAuthentication.Disable)]
     public async Task<IActionResult> Disable([FromBody] DisableTotpRequest request)
     {
+        if (request == null)
+        {
+            return BadRequest("Request cannot be null");
+        }
+        
         DisableTotpRequest requestWithUserId = request with 
         {
             UserId = await GetUserIdFromTokenAsync()

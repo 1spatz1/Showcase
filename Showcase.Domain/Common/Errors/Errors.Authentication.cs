@@ -16,6 +16,10 @@ public static partial class Errors
             $"{nameof(Authentication)}.{nameof(InvalidCredentials)}",
             "Invalid username or password");
         
+        public static Error PasswordsDoNotMatch = Error.Conflict(
+            $"{nameof(Authentication)}.{nameof(PasswordsDoNotMatch)}",
+            "Passwords do not match");
+        
         public static Error UserLockedOut = Error.Unauthorized(
             $"{nameof(Authentication)}.{nameof(UserLockedOut)}",
             "User is currently locked out");

@@ -2,6 +2,5 @@
 
 public record CreateGameRequest
 (
-    Guid UserId,
-    string Username
+    string UserId = ""
 );
