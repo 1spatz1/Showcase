@@ -40,7 +40,7 @@ public class ConfigureTotpCommandHandler : IRequestHandler<ConfigureTotpCommand,
             return Errors.UnexpectedError;
         }
         
-        return new ConfigureTotpResponse(true);
+        return new ConfigureTotpResponse("", "");
     }
     
     private async Task<ErrorOr<string>> GenerateTotpSecret()

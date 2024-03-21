@@ -54,7 +54,7 @@ public class JwtTokenService : IJwtTokenService
         return generateUserTokenAsync;
     }
 
-    public Guid DecodeUserIdFromToken(string token)
+    public async Task<Guid> DecodeUserIdFromToken(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var jwtToken = tokenHandler.ReadJwtToken(token);
