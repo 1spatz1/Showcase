@@ -2,7 +2,6 @@
 
 public record VerifyTotpRequest
 (
-    Guid UserId,
-    string Username,
-    string Token
+    string Token,
+    string UserId = ""
 );

@@ -7,6 +7,7 @@ using Showcase.Api.Routes;
 using Showcase.Application.Admin.Queries.GetUnlockedUsers;
 using Showcase.Application.Authentication.Commands.LockUser;
 using Showcase.Application.Authentication.Commands.UnlockUser;
+using Showcase.Application.Common.Interfaces.Services;
 using Showcase.Contracts.Admin;
 using Showcase.Domain.Identity;
 
@@ -19,7 +20,8 @@ public class AdminController : ApiController
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
     
-    public AdminController(IMediator mediator, IMapper mapper)
+    public AdminController(IMediator mediator, IMapper mapper, IJwtTokenService tokenService)
+        : base(tokenService)
     {
         _mapper = mapper;
         _mediator = mediator;

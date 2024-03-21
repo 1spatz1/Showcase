@@ -9,8 +9,5 @@ public class ConfigureTotpCommandValidator : AbstractValidator<ConfigureTotpComm
         RuleFor(x => x.UserId)
             .NotEmpty()
             .WithMessage("UserId must not be empty.");
-        RuleFor(x => x.Username)
-            .NotEmpty()
-            .WithMessage("Username must not be empty.");
     }
 }

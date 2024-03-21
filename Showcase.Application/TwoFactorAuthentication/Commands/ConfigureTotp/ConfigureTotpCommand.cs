@@ -5,6 +5,5 @@ namespace Showcase.Application.TwoFactorAuthentication.Commands.ConfigureTotp;
 
 public record ConfigureTotpCommand
 (
-    Guid UserId,
-    string Username
+    Guid UserId
 ) : IRequest<ErrorOr<ConfigureTotpResponse>>;

@@ -5,5 +5,5 @@ namespace Showcase.Application.Common.Interfaces.Services;
 public interface IJwtTokenService
 {
     Task<string> GenerateUserTokenAsync(ApplicationUser user);
-    Task<Guid> DecodeUserIdFromToken(string token);
+    Task<string> DecodeUserIdFromToken(string token);
 }

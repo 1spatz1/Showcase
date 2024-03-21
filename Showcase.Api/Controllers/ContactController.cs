@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Showcase.Api.Routes;
+using Showcase.Application.Common.Interfaces.Services;
 using Showcase.Application.Contact.Commands;
 using Showcase.Application.Contact.Common;
 using Showcase.Contracts.Contact;
@@ -17,7 +18,8 @@ namespace Showcase.Api.Controllers
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public ContactController(IMapper mapper, IMediator mediator)
+        public ContactController(IMapper mapper, IMediator mediator, IJwtTokenService tokenService)
+            : base(tokenService)
         {
             _mapper = mapper;
             _mediator = mediator;

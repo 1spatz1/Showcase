@@ -2,6 +2,5 @@
 
 public record ConfigureTotpRequest
 (
-    Guid UserId,
-    string Username
+    string UserId = ""
 );

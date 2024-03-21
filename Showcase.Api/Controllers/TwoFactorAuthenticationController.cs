@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Showcase.Api.Routes;
+using Showcase.Application.Common.Interfaces.Services;
 using Showcase.Application.TwoFactorAuthentication.Commands.ConfigureTotp;
 using Showcase.Application.TwoFactorAuthentication.Commands.DisableTotp;
 using Showcase.Application.TwoFactorAuthentication.Commands.EnableTotp;
@@ -18,7 +19,8 @@ public class TwoFactorAuthenticationController : ApiController
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
 
-    public TwoFactorAuthenticationController(IMediator mediator, IMapper mapper)
+    public TwoFactorAuthenticationController(IMediator mediator, IMapper mapper, IJwtTokenService tokenService)
+        : base(tokenService)
     {
         _mapper = mapper;
         _mediator = mediator;
@@ -27,12 +29,12 @@ public class TwoFactorAuthenticationController : ApiController
     [HttpPost(V1Routes.TwoFactorAuthentication.Configure)]
     public async Task<IActionResult> Configure([FromBody] ConfigureTotpRequest request)
     {
-        if (request == null)
+        ConfigureTotpRequest requestWithUserId = request with 
         {
-            return BadRequest("Request cannot be null");
-        }
+            UserId = await GetUserIdFromTokenAsync()
+        };
         
-        ConfigureTotpCommand command = _mapper.Map<ConfigureTotpCommand>(request);
+        ConfigureTotpCommand command = _mapper.Map<ConfigureTotpCommand>(requestWithUserId);
         ErrorOr<ConfigureTotpResponse> response = await _mediator.Send(command);
         
         return response.Match(value => Ok(_mapper.Map<ConfigureTotpApiResponse>(value)), Problem);
@@ -41,12 +43,12 @@ public class TwoFactorAuthenticationController : ApiController
     [HttpPost(V1Routes.TwoFactorAuthentication.Disable)]
     public async Task<IActionResult> Disable([FromBody] DisableTotpRequest request)
     {
-        if (request == null)
+        DisableTotpRequest requestWithUserId = request with 
         {
-            return BadRequest("Request cannot be null");
-        }
+            UserId = await GetUserIdFromTokenAsync()
+        };
         
-        DisableTotpCommand command = _mapper.Map<DisableTotpCommand>(request);
+        DisableTotpCommand command = _mapper.Map<DisableTotpCommand>(requestWithUserId);
         ErrorOr<DisableTotpResponse> response = await _mediator.Send(command);
         
         return response.Match(value => Ok(_mapper.Map<DisableTotpApiResponse>(value)), Problem);
@@ -60,7 +62,12 @@ public class TwoFactorAuthenticationController : ApiController
             return BadRequest("Request cannot be null");
         }
         
-        EnableTotpCommand command = _mapper.Map<EnableTotpCommand>(request);
+        EnableTotpRequest requestWithUserId = request with 
+        {
+            UserId = await GetUserIdFromTokenAsync()
+        };
+        
+        EnableTotpCommand command = _mapper.Map<EnableTotpCommand>(requestWithUserId);
         ErrorOr<EnableTotpResponse> response = await _mediator.Send(command);
         
         return response.Match(value => Ok(_mapper.Map<EnableTotpApiResponse>(value)), Problem);

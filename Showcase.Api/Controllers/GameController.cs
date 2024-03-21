@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Showcase.Api.Routes;
+using Showcase.Application.Common.Interfaces.Services;
 using Showcase.Application.Game.Commands.ChangeGameState;
 using Showcase.Application.Game.Commands.CreateGame;
 using Showcase.Application.Game.Commands.JoinGame;
@@ -22,7 +23,8 @@ public class GameController : ApiController
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
 
-    public GameController(IMediator mediator, IMapper mapper)
+    public GameController(IMediator mediator, IMapper mapper, IJwtTokenService tokenService)
+        : base(tokenService)
     {
         _mapper = mapper;
         _mediator = mediator;

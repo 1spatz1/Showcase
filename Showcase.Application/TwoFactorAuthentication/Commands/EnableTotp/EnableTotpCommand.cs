@@ -5,7 +5,6 @@ namespace Showcase.Application.TwoFactorAuthentication.Commands.EnableTotp;
 
 public record EnableTotpCommand
 (
-    Guid UserId,
-    string Username,
-    string Token
+    string Token,
+    Guid UserId
 ) : IRequest<ErrorOr<EnableTotpResponse>>;

@@ -32,7 +32,6 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<Authenticat
     public async Task<ErrorOr<AuthenticationResponse>> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
         
-        Console.WriteLine("LoginHandler ------------>   " + request);
         // Check if User with Email exists
         ApplicationUser? findByEmailAsync = await _userManager.FindByEmailAsync(request.Email);
         if (findByEmailAsync is null)
@@ -47,7 +46,7 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<Authenticat
         if (!result)
             return Errors.Authentication.InvalidCredentials;
         
-        VerifyTotpQuery verifyTotpQuery = _mapper.Map<VerifyTotpQuery>(request);
+        VerifyTotpQuery verifyTotpQuery = new VerifyTotpQuery(request.Token, findByEmailAsync.Id);
         ErrorOr<VerifyTotpResponse> verifyTotpResponse = await _mediator.Send(verifyTotpQuery);
         
         if (verifyTotpResponse.IsError)

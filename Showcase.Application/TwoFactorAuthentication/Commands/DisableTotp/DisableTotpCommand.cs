@@ -5,6 +5,5 @@ namespace Showcase.Application.TwoFactorAuthentication.Commands.DisableTotp;
 
 public record DisableTotpCommand
 (
-    Guid UserId,
-    string Username
+    Guid UserId
 ) : IRequest<ErrorOr<DisableTotpResponse>>;

@@ -5,7 +5,6 @@ namespace Showcase.Application.TwoFactorAuthentication.Queries.VerifyTotp;
 
 public record VerifyTotpQuery
 (
-    Guid UserId,
-    string Username,
-    string Token
+    string Token,
+    Guid UserId
 ) : IRequest<ErrorOr<VerifyTotpResponse>>;

@@ -8,6 +8,7 @@ using Showcase.Api.Routes;
 using Showcase.Application.Authentication.Commands.Register;
 using Showcase.Application.Authentication.Common;
 using Showcase.Application.Authentication.Queries.Login;
+using Showcase.Application.Common.Interfaces.Services;
 using Showcase.Contracts.Authentication;
 using LoginRequest = Showcase.Contracts.Authentication.LoginRequest;
 using RegisterRequest = Showcase.Contracts.Authentication.RegisterRequest;
@@ -20,7 +21,8 @@ public class AuthenticationController : ApiController
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
 
-    public AuthenticationController(IMediator mediator, IMapper mapper)
+    public AuthenticationController(IMediator mediator, IMapper mapper, IJwtTokenService tokenService)
+        : base(tokenService)
     {
         _mapper = mapper;
         _mediator = mediator;
@@ -29,7 +31,6 @@ public class AuthenticationController : ApiController
     [HttpPost(V1Routes.Authentication.Login)]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        
         if (request == null)
         {
             return BadRequest("Request cannot be null");

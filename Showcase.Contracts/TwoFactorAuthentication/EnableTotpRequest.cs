@@ -2,7 +2,6 @@
 
 public record EnableTotpRequest
 (
-    Guid UserId,
-    string Username,
-    string Token
+    string Token,
+    string UserId = ""
 );

@@ -2,6 +2,5 @@
 
 public record DisableTotpRequest
 (
-    Guid UserId,
-    string Username
+    string UserId = ""
 );
