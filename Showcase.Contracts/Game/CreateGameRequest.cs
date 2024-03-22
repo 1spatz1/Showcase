@@ -2,5 +2,6 @@
 
 public record CreateGameRequest
 (
+    string RecaptchaToken,
     string UserId = ""
 );

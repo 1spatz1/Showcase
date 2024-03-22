@@ -10,6 +10,8 @@ using Showcase.Application.Authentication.Common;
 using Showcase.Application.Authentication.Queries.Login;
 using Showcase.Application.Common.Interfaces.Services;
 using Showcase.Contracts.Authentication;
+using Showcase.Domain.Common.Errors;
+using Showcase.Infrastructure.Recaptcha.Queries;
 using LoginRequest = Showcase.Contracts.Authentication.LoginRequest;
 using RegisterRequest = Showcase.Contracts.Authentication.RegisterRequest;
 
@@ -36,6 +38,12 @@ public class AuthenticationController : ApiController
             return BadRequest("Request cannot be null");
         }
         
+        ValidateRecaptchaQuery validateRecaptchaQuery = _mapper.Map<ValidateRecaptchaQuery>(request);
+        ErrorOr<ValidateRecaptchaResponse> recaptchaResponse = await _mediator.Send(validateRecaptchaQuery);
+        
+        if (recaptchaResponse.IsError || recaptchaResponse.Value.Succes == false)
+            return BadRequest(Errors.Authorisation.ReCaptchaFailed);
+        
         LoginQuery query = _mapper.Map<LoginQuery>(request);
         ErrorOr<AuthenticationResponse> response = await _mediator.Send(query);
         
@@ -49,6 +57,12 @@ public class AuthenticationController : ApiController
         {
             return BadRequest("Request cannot be null");
         }
+        
+        ValidateRecaptchaQuery validateRecaptchaQuery = _mapper.Map<ValidateRecaptchaQuery>(request);
+        ErrorOr<ValidateRecaptchaResponse> recaptchaResponse = await _mediator.Send(validateRecaptchaQuery);
+        
+        if (recaptchaResponse.IsError || recaptchaResponse.Value.Succes == false)
+            return BadRequest(Errors.Authorisation.ReCaptchaFailed);
         
         RegisterCommand command = _mapper.Map<RegisterCommand>(request);
         ErrorOr<AuthenticationResponse> response = await _mediator.Send(command);

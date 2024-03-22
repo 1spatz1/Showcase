@@ -3,5 +3,6 @@
 public record JoinGameRequest
 (
     Guid GameId,
+    string RecaptchaToken,
     string UserId = ""
 );

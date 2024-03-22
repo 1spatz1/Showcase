@@ -12,7 +12,9 @@ using Showcase.Application.Game.Commands.placeTurn;
 using Showcase.Application.Game.Queries.CheckGameStatus;
 using Showcase.Application.Game.Queries.GetGame;
 using Showcase.Contracts.Game;
+using Showcase.Domain.Common.Errors;
 using Showcase.Domain.Identity;
+using Showcase.Infrastructure.Recaptcha.Queries;
 
 namespace Showcase.Api.Controllers;
 
@@ -38,6 +40,12 @@ public class GameController : ApiController
             return BadRequest("Request cannot be null");
         }
         
+        ValidateRecaptchaQuery validateRecaptchaQuery = _mapper.Map<ValidateRecaptchaQuery>(request);
+        ErrorOr<ValidateRecaptchaResponse> recaptchaResponse = await _mediator.Send(validateRecaptchaQuery);
+        
+        if (recaptchaResponse.IsError || recaptchaResponse.Value.Succes == false)
+            return BadRequest(Errors.Authorisation.ReCaptchaFailed);
+        
         CreateGameRequest requestWithUserId = request with 
         {
             UserId = await GetUserIdFromTokenAsync()
@@ -57,6 +65,12 @@ public class GameController : ApiController
             return BadRequest("Request cannot be null");
         }
         
+        ValidateRecaptchaQuery validateRecaptchaQuery = _mapper.Map<ValidateRecaptchaQuery>(request);
+        ErrorOr<ValidateRecaptchaResponse> recaptchaResponse = await _mediator.Send(validateRecaptchaQuery);
+        
+        if (recaptchaResponse.IsError || recaptchaResponse.Value.Succes == false)
+            return BadRequest(Errors.Authorisation.ReCaptchaFailed);
+        
         JoinGameRequest requestWithUserId = request with 
         {
             UserId = await GetUserIdFromTokenAsync()
@@ -75,6 +89,12 @@ public class GameController : ApiController
         {
             return BadRequest("Request cannot be null");
         }
+        
+        ValidateRecaptchaQuery validateRecaptchaQuery = _mapper.Map<ValidateRecaptchaQuery>(request);
+        ErrorOr<ValidateRecaptchaResponse> recaptchaResponse = await _mediator.Send(validateRecaptchaQuery);
+        
+        if (recaptchaResponse.IsError || recaptchaResponse.Value.Succes == false)
+            return BadRequest(Errors.Authorisation.ReCaptchaFailed);
         
         TurnGameRequest requestWithUserId = request with 
         {
