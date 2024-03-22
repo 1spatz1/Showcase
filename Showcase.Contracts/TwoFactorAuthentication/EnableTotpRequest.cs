@@ -2,6 +2,7 @@
 
 public record EnableTotpRequest
 (
+    string RecaptchaToken,
     string Token,
     string UserId = ""
 );

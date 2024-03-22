@@ -9,6 +9,8 @@ using Showcase.Application.TwoFactorAuthentication.Commands.ConfigureTotp;
 using Showcase.Application.TwoFactorAuthentication.Commands.DisableTotp;
 using Showcase.Application.TwoFactorAuthentication.Commands.EnableTotp;
 using Showcase.Contracts.TwoFactorAuthentication;
+using Showcase.Domain.Common.Errors;
+using Showcase.Infrastructure.Recaptcha.Queries;
 
 namespace Showcase.Api.Controllers;
 
@@ -34,6 +36,12 @@ public class TwoFactorAuthenticationController : ApiController
             return BadRequest("Request cannot be null");
         }
         
+        ValidateRecaptchaQuery validateRecaptchaQuery = _mapper.Map<ValidateRecaptchaQuery>(request);
+        ErrorOr<ValidateRecaptchaResponse> recaptchaResponse = await _mediator.Send(validateRecaptchaQuery);
+        
+        if (recaptchaResponse.IsError || recaptchaResponse.Value.Succes == false)
+            return BadRequest(Errors.Authorisation.ReCaptchaFailed);
+        
         ConfigureTotpRequest requestWithUserId = request with 
         {
             UserId = await GetUserIdFromTokenAsync()
@@ -53,6 +61,12 @@ public class TwoFactorAuthenticationController : ApiController
             return BadRequest("Request cannot be null");
         }
         
+        ValidateRecaptchaQuery validateRecaptchaQuery = _mapper.Map<ValidateRecaptchaQuery>(request);
+        ErrorOr<ValidateRecaptchaResponse> recaptchaResponse = await _mediator.Send(validateRecaptchaQuery);
+        
+        if (recaptchaResponse.IsError || recaptchaResponse.Value.Succes == false)
+            return BadRequest(Errors.Authorisation.ReCaptchaFailed);
+        
         DisableTotpRequest requestWithUserId = request with 
         {
             UserId = await GetUserIdFromTokenAsync()
@@ -71,6 +85,12 @@ public class TwoFactorAuthenticationController : ApiController
         {
             return BadRequest("Request cannot be null");
         }
+        
+        ValidateRecaptchaQuery validateRecaptchaQuery = _mapper.Map<ValidateRecaptchaQuery>(request);
+        ErrorOr<ValidateRecaptchaResponse> recaptchaResponse = await _mediator.Send(validateRecaptchaQuery);
+        
+        if (recaptchaResponse.IsError || recaptchaResponse.Value.Succes == false)
+            return BadRequest(Errors.Authorisation.ReCaptchaFailed);
         
         EnableTotpRequest requestWithUserId = request with 
         {
