@@ -48,6 +48,7 @@ public class DbSeeder
                 user = await userManager.FindByEmailAsync(AdminShowcaseInternal);
                 // Seed the default roles onto the admin user
                 await userManager.AddToRoleAsync(user, "Administrator");
+                await userManager.AddToRoleAsync(user, "Member");
             }
             
             ApplicationUser? testUser = new()
@@ -58,7 +59,7 @@ public class DbSeeder
             IdentityResult testUserresult = await userManager.CreateAsync(testUser, "ShowcaseAPI@TestUserPassword_ChangeMe-123");
             if (testUserresult.Succeeded)
             {
-                user = await userManager.FindByEmailAsync(AdminShowcaseInternal);
+                user = await userManager.FindByEmailAsync(TestUserShowcaseInternal);
                 // Seed the default roles onto the test-user user
                 await userManager.AddToRoleAsync(user, "Member");
             }
