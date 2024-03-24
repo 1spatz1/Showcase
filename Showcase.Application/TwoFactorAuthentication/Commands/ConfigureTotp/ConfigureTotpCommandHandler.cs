@@ -32,7 +32,6 @@ public class ConfigureTotpCommandHandler : IRequestHandler<ConfigureTotpCommand,
             return Errors.TwoFactorAuthentication.TotpAlreadyConfigured;
 
         string secret = await GenerateTotpSecret();
-        
         var uriString = new OtpUri(OtpType.Totp, secret, user.Email, EnvironmentReader.TwoFactorAuthentication.Issuer).ToString();
 
         var newTotpSecret = new UserTotpSecret

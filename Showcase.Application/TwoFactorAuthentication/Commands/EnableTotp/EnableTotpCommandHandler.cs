@@ -17,13 +17,11 @@ public class EnableTotpCommandHandler : IRequestHandler<EnableTotpCommand, Error
     private readonly IMediator _mediator;
     private readonly ILogger<EnableTotpCommandHandler> _logger;
     private readonly IApplicationDbContext _context;
-    private readonly UserManager<ApplicationUser> _userManager;
     
-    public EnableTotpCommandHandler(UserManager<ApplicationUser> userManager, ILogger<EnableTotpCommandHandler> logger, IApplicationDbContext context, IMediator mediator, IMapper mapper)
+    public EnableTotpCommandHandler(ILogger<EnableTotpCommandHandler> logger, IApplicationDbContext context, IMediator mediator, IMapper mapper)
     {
         _logger = logger;
         _context = context; 
-        _userManager = userManager;
         _mapper = mapper;
         _mediator = mediator;
     }
@@ -32,7 +30,7 @@ public class EnableTotpCommandHandler : IRequestHandler<EnableTotpCommand, Error
         CancellationToken cancellationToken)
     {
         // Get user
-        ApplicationUser? findByGuidAsync = await _userManager.FindByIdAsync(request.UserId.ToString());
+        ApplicationUser? findByGuidAsync = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
         if (findByGuidAsync is null)
             return Errors.Authentication.InvalidCredentials;
         
@@ -50,11 +48,13 @@ public class EnableTotpCommandHandler : IRequestHandler<EnableTotpCommand, Error
         
         findByGuidAsync.TwoFactorEnabled = true;
         
-        // Update user
-        IdentityResult result = await _userManager.UpdateAsync(findByGuidAsync);
-        if (!result.Succeeded)
+        try
         {
-            _logger.LogError("Failed to enable 2FA for user with email {Email} in database: {Message}", findByGuidAsync.Email, result.Errors);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Failed to enable 2FA for user with email {Email} in database: {Message}", findByGuidAsync.Email, ex.Message);
             return Errors.UnexpectedError;
         }
         

@@ -12,10 +12,10 @@ namespace Showcase.Application.Game.Commands.TurnGame;
 
 public class TurnGameCommandHandler : IRequestHandler<TurnGameCommand, ErrorOr<TurnGameResponse>>
 {
-    private readonly ILogger<CreateGameCommandHandler> _logger;
+    private readonly ILogger<TurnGameCommandHandler> _logger;
     private readonly IApplicationDbContext _context;
 
-    public TurnGameCommandHandler(ILogger<CreateGameCommandHandler> logger, IApplicationDbContext context)
+    public TurnGameCommandHandler(ILogger<TurnGameCommandHandler> logger, IApplicationDbContext context)
     {
         _logger = logger;
         _context = context;

@@ -12,12 +12,10 @@ namespace Showcase.Application.TwoFactorAuthentication.Commands.DisableTotp;
 public class DisableTotpCommandHandler : IRequestHandler<DisableTotpCommand, ErrorOr<DisableTotpResponse>>
 {
     private readonly ILogger<DisableTotpCommandHandler> _logger;
-    private readonly UserManager<ApplicationUser> _userManager;
     private readonly IApplicationDbContext _context;
     
-    public DisableTotpCommandHandler(UserManager<ApplicationUser> userManager, ILogger<DisableTotpCommandHandler> logger, IApplicationDbContext context)
+    public DisableTotpCommandHandler(ILogger<DisableTotpCommandHandler> logger, IApplicationDbContext context)
     {
-        _userManager = userManager;
         _logger = logger;
         _context = context; 
     }
@@ -28,12 +26,16 @@ public class DisableTotpCommandHandler : IRequestHandler<DisableTotpCommand, Err
         if (user is null)
             return Errors.Authentication.InvalidCredentials;
         
-        var disable2FaResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
-        if (!disable2FaResult.Succeeded)
-        {
-            _logger.LogError("Failed to disable 2FA for user with email {Email} in database: {Message}", user.Email, disable2FaResult.Errors);
+        user.TwoFactorEnabled = false;
+        if(await SaveToDb(user, cancellationToken) == false)
             return Errors.UnexpectedError;
-        }
+
+        // var disable2FaResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
+        // if (!disable2FaResult.Succeeded)
+        // {
+        //     _logger.LogError("Failed to disable 2FA for user with email {Email} in database: {Message}", user.Email, disable2FaResult.Errors);
+        //     return Errors.UnexpectedError;
+        // }
         
         var userTotpSecret = await _context.UserTotpSecrets.FirstOrDefaultAsync(x => x.UserId == user.Id, cancellationToken);
         if (userTotpSecret is not null)
@@ -55,6 +57,20 @@ public class DisableTotpCommandHandler : IRequestHandler<DisableTotpCommand, Err
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to delete userTotpSecret in database: {Message}", ex.Message);
+            return false;
+        }
+    }
+
+    private async Task<ErrorOr<Boolean>> SaveToDb(ApplicationUser user, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _context.SaveChangesAsync(cancellationToken);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Failed to disable 2FA for user with email {Email} in database: {Message}", user.Email, ex.Message);
             return false;
         }
     }

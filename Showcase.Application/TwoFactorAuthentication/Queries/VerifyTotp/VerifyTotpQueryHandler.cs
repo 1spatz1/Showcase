@@ -34,7 +34,7 @@ public class VerifyTotpQueryHandler : IRequestHandler<VerifyTotpQuery, ErrorOr<V
         var totp = new Totp(SecretBytes);
         
         long timeWindowUsed;
-        var veritfyTotpResult =  totp.VerifyTotp(request.Token.Trim(), out timeWindowUsed, VerificationWindow.RfcSpecifiedNetworkDelay);
+        var veritfyTotpResult = totp.VerifyTotp(request.Token.Trim(), out timeWindowUsed, VerificationWindow.RfcSpecifiedNetworkDelay);
         
         return new VerifyTotpResponse(veritfyTotpResult);
     }
