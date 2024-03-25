@@ -36,11 +36,11 @@ public class TwoFactorAuthenticationController : ApiController
             return BadRequest("Request cannot be null");
         }
         
-        ValidateRecaptchaQuery validateRecaptchaQuery = _mapper.Map<ValidateRecaptchaQuery>(request);
-        ErrorOr<ValidateRecaptchaResponse> recaptchaResponse = await _mediator.Send(validateRecaptchaQuery);
-        
-        if (recaptchaResponse.IsError || recaptchaResponse.Value.Succes == false)
-            return BadRequest(Errors.Authorisation.ReCaptchaFailed);
+        // ValidateRecaptchaQuery validateRecaptchaQuery = _mapper.Map<ValidateRecaptchaQuery>(request);
+        // ErrorOr<ValidateRecaptchaResponse> recaptchaResponse = await _mediator.Send(validateRecaptchaQuery);
+        //
+        // if (recaptchaResponse.IsError || recaptchaResponse.Value.Succes == false)
+        //     return BadRequest(Errors.Authorisation.ReCaptchaFailed);
         
         ConfigureTotpRequest requestWithUserId = request with 
         {
@@ -61,11 +61,11 @@ public class TwoFactorAuthenticationController : ApiController
             return BadRequest("Request cannot be null");
         }
         
-        ValidateRecaptchaQuery validateRecaptchaQuery = _mapper.Map<ValidateRecaptchaQuery>(request);
-        ErrorOr<ValidateRecaptchaResponse> recaptchaResponse = await _mediator.Send(validateRecaptchaQuery);
-        
-        if (recaptchaResponse.IsError || recaptchaResponse.Value.Succes == false)
-            return BadRequest(Errors.Authorisation.ReCaptchaFailed);
+        // ValidateRecaptchaQuery validateRecaptchaQuery = _mapper.Map<ValidateRecaptchaQuery>(request);
+        // ErrorOr<ValidateRecaptchaResponse> recaptchaResponse = await _mediator.Send(validateRecaptchaQuery);
+        //
+        // if (recaptchaResponse.IsError || recaptchaResponse.Value.Succes == false)
+        //     return BadRequest(Errors.Authorisation.ReCaptchaFailed);
         
         DisableTotpRequest requestWithUserId = request with 
         {

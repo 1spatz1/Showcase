@@ -2,6 +2,5 @@
 
 public record ConfigureTotpRequest
 (
-    string RecaptchaToken,
     string UserId = ""
 );

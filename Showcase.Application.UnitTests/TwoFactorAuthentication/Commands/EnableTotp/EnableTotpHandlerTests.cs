@@ -9,6 +9,7 @@ using OtpNet;
 using Showcase.Application.Common.Mapping;
 using Showcase.Application.TwoFactorAuthentication.Commands.ConfigureTotp;
 using Showcase.Application.TwoFactorAuthentication.Commands.EnableTotp;
+using Showcase.Application.TwoFactorAuthentication.Queries.VerifyTotp;
 using Showcase.Domain.Common.Errors;
 using Xunit.Abstractions;
 
@@ -24,22 +25,6 @@ public class EnableTotpHandlerTests : IClassFixture<DatabaseFixture>, IDisposabl
     {
         _fixture = fixture;
         _testOutputHelper = testOutputHelper;
-        Setup();
-    }
-    
-    private void Setup()
-    {
-        // Create a new service collection
-        var serviceCollection = new ServiceCollection();
-
-        // Add your mappings
-        serviceCollection.AddMapping(); // Replace with your actual mapping configuration
-
-        // Build the service provider
-        var serviceProvider = serviceCollection.BuildServiceProvider();
-
-        // Resolve the IMapper instance
-        _mapper = serviceProvider.GetService<IMapper>();
     }
 
     public void Dispose()
@@ -51,12 +36,11 @@ public class EnableTotpHandlerTests : IClassFixture<DatabaseFixture>, IDisposabl
     public async Task EnableTotpHandler_ShouldReturnSuccess()
     {
         DotNetEnv.Env.TraversePath().Load();
-        // Arrange
-        var mediator = new Mock<IMediator>();
-        var mapper = new Mock<IMapper>();
+        // Arrange;
         var logger = new Mock<ILogger<EnableTotpCommandHandler>>();
         var configureTotplogger = new Mock<ILogger<ConfigureTotpCommandHandler>>();
-        var handler = new EnableTotpCommandHandler(logger.Object, _fixture.Context, mediator.Object, _mapper);
+        var verifyTotplogger = new Mock<ILogger<VerifyTotpQueryHandler>>();
+        var handler = new EnableTotpCommandHandler(logger.Object, _fixture.Context);
 
         // Get UserID
         Guid UserId = Guid.Parse(_fixture.Context.Users.Where(x => x.UserName == "super-admin").Select(x => x.Id).FirstOrDefault().ToString());
@@ -68,12 +52,18 @@ public class EnableTotpHandlerTests : IClassFixture<DatabaseFixture>, IDisposabl
         var configureTotpResult = await configureTotpHandler.Handle(configureTotpCommand, CancellationToken.None);
         _testOutputHelper.WriteLine(configureTotpResult.Value.SharedKey);
         
+        // make TOTP token
         var secretBytes = Base32Encoding.ToBytes(configureTotpResult.Value.SharedKey);
         var totp = new Totp(secretBytes);
         string token = totp.ComputeTotp();
-        _testOutputHelper.WriteLine($"token: {token}");
         
-        var command = new EnableTotpCommand(token, UserId);
+        // Verify TOTP
+        var verifyTotpHandler = new VerifyTotpQueryHandler(verifyTotplogger.Object, _fixture.Context);
+        var verifyTotpCommand = new VerifyTotpQuery(token, UserId);
+        var verifyTotpResult = await verifyTotpHandler.Handle(verifyTotpCommand, CancellationToken.None);
+        _testOutputHelper.WriteLine(verifyTotpResult.Value.Success.ToString());
+        
+        var command = new EnableTotpCommand(UserId);
         _testOutputHelper.WriteLine($"command: {command}");
 
         // Act
@@ -81,6 +71,7 @@ public class EnableTotpHandlerTests : IClassFixture<DatabaseFixture>, IDisposabl
         _testOutputHelper.WriteLine($"result: {result}");
 
         // Assert
+        verifyTotpResult.Value.Success.Should().BeTrue(); // Assert that the TOTP is successfully verified
         result.IsError.Should().BeFalse(); // Assert that there are no errors
         result.Value.Success.Should().Be(true); // Assert that the TOTP is enabled
     }

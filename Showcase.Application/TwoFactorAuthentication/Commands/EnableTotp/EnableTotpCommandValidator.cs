@@ -10,9 +10,5 @@ public class EnableTotpCommandValidator : AbstractValidator<EnableTotpCommand>
         RuleFor(x => x.UserId)
             .NotEmpty()
             .WithMessage("UserId must not be empty.");
-        RuleFor(x => x.Token)
-            .NotEmpty()
-            .WithMessage("Token must not be empty.")
-            .MaximumLength(8);
     }
 }

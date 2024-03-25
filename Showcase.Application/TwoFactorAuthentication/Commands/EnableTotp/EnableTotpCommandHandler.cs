@@ -13,17 +13,13 @@ namespace Showcase.Application.TwoFactorAuthentication.Commands.EnableTotp;
 
 public class EnableTotpCommandHandler : IRequestHandler<EnableTotpCommand, ErrorOr<EnableTotpResponse>>
 {
-    private readonly IMapper _mapper;
-    private readonly IMediator _mediator;
     private readonly ILogger<EnableTotpCommandHandler> _logger;
     private readonly IApplicationDbContext _context;
     
-    public EnableTotpCommandHandler(ILogger<EnableTotpCommandHandler> logger, IApplicationDbContext context, IMediator mediator, IMapper mapper)
+    public EnableTotpCommandHandler(ILogger<EnableTotpCommandHandler> logger, IApplicationDbContext context)
     {
         _logger = logger;
         _context = context; 
-        _mapper = mapper;
-        _mediator = mediator;
     }
 
     public async Task<ErrorOr<EnableTotpResponse>> Handle(EnableTotpCommand request,
@@ -37,27 +33,24 @@ public class EnableTotpCommandHandler : IRequestHandler<EnableTotpCommand, Error
         if (findByGuidAsync.TwoFactorEnabled)
             return Errors.TwoFactorAuthentication.TotpAlreadyConfigured;
         
-        VerifyTotpQuery verifyTotpQuery = _mapper.Map<VerifyTotpQuery>(request);
-        ErrorOr<VerifyTotpResponse> verifyTotpResponse = await _mediator.Send(verifyTotpQuery);
-        
-        if (verifyTotpResponse.IsError)
-            return verifyTotpResponse.Errors;
-        
-        if (verifyTotpResponse.Value.Success == false)
-            return Errors.TwoFactorAuthentication.TotpFailure;
-        
         findByGuidAsync.TwoFactorEnabled = true;
+        if(await SaveToDb(findByGuidAsync, cancellationToken) == false)
+            return Errors.UnexpectedError;
         
+        return new EnableTotpResponse(true);
+    }
+    
+    private async Task<ErrorOr<Boolean>> SaveToDb(ApplicationUser user, CancellationToken cancellationToken)
+    {
         try
         {
             await _context.SaveChangesAsync(cancellationToken);
+            return true;
         }
         catch (Exception ex)
         {
-            _logger.LogError("Failed to enable 2FA for user with email {Email} in database: {Message}", findByGuidAsync.Email, ex.Message);
-            return Errors.UnexpectedError;
+            _logger.LogError("Failed to enable 2FA for user with email {Email} in database: {Message}", user.Email, ex.Message);
+            return false;
         }
-        
-        return new EnableTotpResponse(true);
     }
 }
