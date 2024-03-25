@@ -43,7 +43,7 @@ public class TurnGameCommandHandlerTests : IClassFixture<DatabaseFixture>, IDisp
         Guid gameId = createGameResult.Value.GameId;
         
         // Join Game
-        var joinGameCommand = new JoinGameCommand(UserId, gameId);
+        var joinGameCommand = new JoinGameCommand(testUserId, gameId);
         var joinGameHandler = new JoinGameCommandHandler(joinGameLogger.Object, _fixture.Context);
         var joinGameResult = await joinGameHandler.Handle(joinGameCommand, CancellationToken.None);
         
@@ -58,7 +58,6 @@ public class TurnGameCommandHandlerTests : IClassFixture<DatabaseFixture>, IDisp
         var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        // get game with boardpositions
         result.IsError.Should().BeFalse(); // Assert that there are no errors
         var game = _fixture.Context.Games.Include(x => x.Board).FirstOrDefault(x => x.Id == gameId);
         game.Board.Should().NotBeEmpty(); // Assert that the game has board positions
