@@ -17,7 +17,7 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
             .WithMessage("Username must be less than 30 characters long.");
         RuleFor(x => x.Password)
             .MaximumLength(80)
-            .WithMessage("Password must be less than 1024 characters long.")
+            .WithMessage("Password must be less than 80 characters long.")
             // Must have digit
             .Matches(@"[0-9]+")
             .WithMessage("Password must contain at least one digit.")
@@ -33,5 +33,10 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
             // Must be at least 8 characters
             .MinimumLength(8)
             .WithMessage("Password must be at least 8 characters long.");
+        RuleFor(x => x.ConfirmPassword)
+            .MaximumLength(80)
+            .WithMessage("ConfirmPassword must be less than 80 characters long.")
+            .MinimumLength(8)
+            .WithMessage("ConfirmPassword must be at least 8 characters long.");
     }
 }
