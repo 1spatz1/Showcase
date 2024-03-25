@@ -2,6 +2,14 @@
 
 public class EnvironmentReader
 {
+    public static class Authentication
+    {
+        public static int? MaxFailedAttempts =>
+            Convert.ToInt32(Environment.GetEnvironmentVariable("AUTHENTICATION_MAXFAILEDATTEMPTS") ?? string.Empty);
+        
+        public static int? LockoutMinutes =>
+            Convert.ToInt32(Environment.GetEnvironmentVariable("AUTHENTICATION_LOCKOUTMINUTES") ?? string.Empty);
+    }
     public static class Email
     {
         public static string EmailUsername =>

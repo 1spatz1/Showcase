@@ -42,9 +42,18 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<Authenticat
             return Errors.Authentication.UserLockedOut;
 
         // Check if Password is correct
-        bool result = await _userManager.CheckPasswordAsync(findByEmailAsync, request.Password);
+        var result = await _userManager.CheckPasswordAsync(findByEmailAsync, request.Password);
         if (!result)
-            return Errors.Authentication.InvalidCredentials;
+        {
+            findByEmailAsync.AccessFailedCount++;
+            await _userManager.UpdateAsync(findByEmailAsync);
+            if (!(findByEmailAsync.AccessFailedCount >= EnvironmentReader.Authentication.MaxFailedAttempts))
+                return Errors.Authentication.InvalidCredentials;
+            await _userManager.SetLockoutEndDateAsync(findByEmailAsync,
+                _dateTimeProvider.UtcNow.AddMinutes((int)EnvironmentReader.Authentication.LockoutMinutes!));
+            return Errors.Authentication.UserLockedOut;
+        }
+            
         
         if (findByEmailAsync.TwoFactorEnabled)
         {
