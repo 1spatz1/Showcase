@@ -8,6 +8,8 @@ public class CreateGameCommandValidator : AbstractValidator<CreateGameCommand>
     {
         RuleFor(x => x.UserId)
             .NotEmpty()
-            .WithMessage("UserId must not be empty.");
+            .WithMessage("UserId must not be empty.")
+            .Must(guid => Guid.TryParse(guid.ToString(), out _))
+            .WithMessage("Invalid UserId format");
     }
 }
