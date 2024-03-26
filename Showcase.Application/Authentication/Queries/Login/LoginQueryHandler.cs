@@ -51,6 +51,8 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<Authenticat
                 return Errors.Authentication.InvalidCredentials;
             await _userManager.SetLockoutEndDateAsync(findByEmailAsync,
                 _dateTimeProvider.UtcNow.AddMinutes((int)EnvironmentReader.Authentication.LockoutMinutes!));
+            findByEmailAsync.AccessFailedCount = 0;
+            await _userManager.UpdateAsync(findByEmailAsync);
             return Errors.Authentication.UserLockedOut;
         }
             
