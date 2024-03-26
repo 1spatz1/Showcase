@@ -1,4 +1,4 @@
-﻿using ErrorOr;
+using ErrorOr;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -55,6 +55,9 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<Authenticat
             await _userManager.UpdateAsync(findByEmailAsync);
             return Errors.Authentication.UserLockedOut;
         }
+        
+        findByEmailAsync.AccessFailedCount = 0;
+        await _userManager.UpdateAsync(findByEmailAsync);
             
         
         if (findByEmailAsync.TwoFactorEnabled)
