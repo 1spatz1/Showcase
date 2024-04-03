@@ -13,7 +13,8 @@ public class LoginQueryValidator : AbstractValidator<LoginQuery>
             .MaximumLength(80)
             .WithMessage("Email must be less than 80 characters long.");
         RuleFor(x => x.Password)
-            .MaximumLength(80)
+            .MaximumLength(128)
+            .WithMessage("ConfirmPassword must be less than 128 characters long.")
             .NotEmpty();
         RuleFor(x => x.Token)
             .MaximumLength(8);
