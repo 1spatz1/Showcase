@@ -49,7 +49,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
                 builder =>
                 {
                     builder
-                        .WithOrigins("http://localhost:3000", "https://localhost:3000", "https://webdev-cv.vercel.app") // specifying the allowed origins
+                        .WithOrigins("https://localhost:3000", "https://web-development-game.vercel.app/") // specifying the allowed origins
                         .WithMethods("POST", "GET", "OPTIONS") // defining the allowed HTTP methods
                         .AllowAnyHeader() // allowing any header to be sent
                         .AllowCredentials(); // allowing credentials
