@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 
 namespace Showcase.Application.Authentication.Commands.Register;
 

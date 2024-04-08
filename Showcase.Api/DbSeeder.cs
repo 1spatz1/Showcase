@@ -8,7 +8,7 @@ namespace Showcase.Api;
 
 public class DbSeeder
 {
-    private const string AdminShowcaseInternal = "admin@showcase.internal";
+    private const string AdminShowcaseInternal = "grote-koning@showcase.internal";
     private const string TestUserShowcaseInternal = "test-user@showcase.internal";
 
     public static async Task SeedDbAsync(IApplicationDbContext context, UserManager<ApplicationUser> userManager,
@@ -39,7 +39,7 @@ public class DbSeeder
         {
             ApplicationUser? user = new()
             {
-                UserName = "super-admin",
+                UserName = "grote-koning",
                 Email = AdminShowcaseInternal
             };
                 IdentityResult result = await userManager.CreateAsync(user, "ShowcaseAPI@AdminPassword_ChangeMe-123");

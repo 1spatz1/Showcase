@@ -62,30 +62,4 @@ public class JwtTokenService : IJwtTokenService
     
         return id;
     }
-    // public async Task<Guid> DecodeUserIdFromToken(string token)
-    // {
-    //     var tokenHandler = new JwtSecurityTokenHandler();
-    //     if (!tokenHandler.CanReadToken(token))
-    //     {
-    //         Console.WriteLine("Invalid JWT token");
-    //         return Guid.Empty;
-    //     }
-    //
-    //     var jwtToken = tokenHandler.ReadJwtToken(token);
-    //     var claim = jwtToken.Claims.FirstOrDefault(x => x.Type == "nameid");
-    //     if (claim == null)
-    //     {
-    //         Console.WriteLine("JWT token does not contain a NameIdentifier claim");
-    //         return Guid.Empty;
-    //     }
-    //
-    //     if (!Guid.TryParse(claim.Value, out var id))
-    //     {
-    //         Console.WriteLine("NameIdentifier claim is not a valid Guid");
-    //         Console.WriteLine(claim.Value);
-    //         return Guid.Empty;
-    //     }
-    //
-    //     return id;
-    // }
 }
