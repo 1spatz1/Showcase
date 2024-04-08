@@ -6,7 +6,6 @@ public class EnvironmentReader
     {
         public static int? MaxFailedAttempts =>
             Convert.ToInt32(Environment.GetEnvironmentVariable("AUTHENTICATION_MAXFAILEDATTEMPTS") ?? string.Empty);
-        
         public static int? LockoutMinutes =>
             Convert.ToInt32(Environment.GetEnvironmentVariable("AUTHENTICATION_LOCKOUTMINUTES") ?? string.Empty);
     }
@@ -14,7 +13,6 @@ public class EnvironmentReader
     {
         public static string EmailUsername =>
             Environment.GetEnvironmentVariable("MAILTRAP_USERNAME") ?? throw new InvalidOperationException();
-        
         public static string EmailPassword =>
             Environment.GetEnvironmentVariable("MAILTRAP_PASSWORD") ?? throw new InvalidOperationException();
     }
@@ -28,19 +26,14 @@ public class EnvironmentReader
     {
         public static string SigningKey => Environment.GetEnvironmentVariable("JWT_SIGNINGKEY") ??
                                           throw new InvalidOperationException();
-
         public static int? ExpiryDays =>
             Convert.ToInt32(Environment.GetEnvironmentVariable("JWT_EXPIRYDAYS") ?? string.Empty);
-        
         public static int? ExpiryHours =>
             Convert.ToInt32(Environment.GetEnvironmentVariable("JWT_EXPIRYHOURS") ?? string.Empty);
-        
         public static int? ExpiryMinutes =>
             Convert.ToInt32(Environment.GetEnvironmentVariable("JWT_EXPIRYMINUTES") ?? string.Empty);
-
         public static string Issuer => Environment.GetEnvironmentVariable("JWT_ISSUER") ??
                                        throw new InvalidOperationException();
-
         public static string Audience => Environment.GetEnvironmentVariable("JWT_AUDIENCE") ??
                                          throw new InvalidOperationException();
     }
